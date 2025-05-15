@@ -16,6 +16,14 @@ async function connectDB() {
   return client.db("Insightly_DB").collection("sondages");
 }
 
+const User = require("./schema/user");
+
+app.post("/users", async (req, res) => {
+  const user = new User(req.body);
+  await user.save();
+  res.json(user);
+});
+
 app.get("/sondages", async (req, res) => {
   const collection = await connectDB();
   const data = await collection.find({}).toArray();
