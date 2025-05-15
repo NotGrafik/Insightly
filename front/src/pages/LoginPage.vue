@@ -18,7 +18,7 @@ import { GalleryVerticalEnd } from 'lucide-vue-next';
         >
           <GalleryVerticalEnd class="size-4" />
         </div>
-        Acme Inc.
+        Insightly Inc.
       </a>
       <LoginForm />
     </div>
