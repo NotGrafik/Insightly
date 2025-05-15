@@ -13,16 +13,16 @@ const client = new MongoClient(uri);
 async function connectDB() {
   await client.connect();
   console.log("MongoDB connecté !");
-  return client.db("pokerGameDb").collection("parties");
+  return client.db("Insightly_DB").collection("sondages");
 }
 
-app.get("/parties", async (req, res) => {
+app.get("/sondages", async (req, res) => {
   const collection = await connectDB();
   const data = await collection.find({}).toArray();
   res.json(data);
 });
 
-app.post("/parties", async (req, res) => {
+app.post("/sondages", async (req, res) => {
   const collection = await connectDB();
   const result = await collection.insertOne(req.body);
   res.json(result);
