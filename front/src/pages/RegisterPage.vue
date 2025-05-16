@@ -20,8 +20,7 @@ import {
 } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { Eye } from 'lucide-vue-next'
-import { EyeClosed } from 'lucide-vue-next'
+import { Eye, EyeClosed } from 'lucide-vue-next'
 
 // Champs liés au formulaire
 const firstName = ref('')
