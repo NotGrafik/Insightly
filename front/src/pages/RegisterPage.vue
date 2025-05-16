@@ -29,12 +29,35 @@ const password = ref('')
 const showPassword = ref(false)
 
 const handleSubmit = () => {
-  console.log('Form submitted with:')
-  console.log({
+  console.log('Form submitted with:', {
     firstName: firstName.value,
     lastName: lastName.value,
     email: email.value,
-    password: password.value,
+    passwordHash: password.value,
+  })
+  fetch('/api/register', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+  },
+  body: JSON.stringify({
+    firstName: firstName.value,
+    lastName: lastName.value,
+    email: email.value,
+    passwordHash: password.value,
+  }),
+})
+  .then((response) => {
+    if (!response.ok) {
+      throw new Error('Network response was not ok')
+    }
+    return response.json()
+  })
+  .then((data) => {
+    console.log('Success:', data)
+  })
+  .catch((error) => {
+    console.error('Error:', error)
   })
 }
 </script>
