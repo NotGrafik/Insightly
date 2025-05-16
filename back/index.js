@@ -1,5 +1,6 @@
 const express = require("express");
 const cors = require("cors");
+const bcrypt = require("bcrypt");
 const { MongoClient } = require("mongodb");
 require("dotenv").config();
 
@@ -32,13 +33,30 @@ startServer();
 const User = require("./schema/user");
 app.post("/register", async (req, res) => {
   try {
-    const user = new User(req.body);
+    const hashedPassword = await bcrypt.hash(req.body.passwordHash, 10);
+    const user = new User({ ...req.body, passwordHash: hashedPassword });
     db.collection("users").insertOne(user);
     res.json(user);
   } catch (error) {
     res.status(500).json({ error: "Erreur lors de l'enregistrement de l'utilisateur." });
   }
 });
+
+app.post("/login", async (req, res) => {
+  try {
+    const user = await db.collection("users").findOne({ email: req.body.email });
+    if (!user) {
+      return res.status(401).json({ error: "Utilisateur non trouvé." });
+    }
+    const isPasswordValid = await bcrypt.compare(req.body.password, user.passwordHash);
+    if (!isPasswordValid) {
+      return res.status(401).json({ error: "Mot de passe incorrect." });
+    }
+    res.status(200).json({ message: "Connexion réussie." });
+  } catch (err) {
+    res.status(500).json({ error: "Erreur lors de la connexion de l'utilisateur." });
+  }
+})
 
 app.get("/sondages", async (req, res) => {
   const collection = await connectDB();

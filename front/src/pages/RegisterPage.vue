@@ -194,13 +194,11 @@ const handleSubmit = () => {
             </div>
             <p v-if="formErrors.password" class="text-sm text-red-500">{{ formErrors.password }}</p>
           </div>
-
-          <Button type="submit" class="w-full">Create an account</Button>
-          <Button variant="outline" class="w-full" type="button">Sign up with GitHub</Button>
+          <Button type="submit" class="w-full"> Create an account </Button>
         </form>
         <div class="mt-4 text-center text-sm">
           Already have an account?
-          <a href="#" class="underline"> Sign in </a>
+          <a href="/auth/login" class="underline"> Sign in </a>
         </div>
       </CardContent>
     </Card>
