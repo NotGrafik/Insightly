@@ -20,10 +20,7 @@ import {
 } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { Eye } from 'lucide-vue-next'
-import { EyeClosed } from 'lucide-vue-next'
-
-import { useRouter } from 'vue-router';
+import { Eye, EyeClosed } from 'lucide-vue-next'
 
 // Champs liés au formulaire
 const firstName = ref('')
@@ -198,7 +195,9 @@ const handleSubmit = () => {
             </div>
             <p v-if="formErrors.password" class="text-sm text-red-500">{{ formErrors.password }}</p>
           </div>
-          <Button type="submit" class="w-full"> Create an account </Button>
+
+          <Button type="submit" class="w-full">Create an account</Button>
+          <Button variant="outline" class="w-full" type="button">Sign up with GitHub</Button>
         </form>
         <div class="mt-4 text-center text-sm">
           Already have an account?
