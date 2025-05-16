@@ -18,7 +18,7 @@ async function connectDB() {
 
 const User = require("./schema/user");
 
-app.post("/users", async (req, res) => {
+app.post("/register", async (req, res) => {
   const user = new User(req.body);
   await user.save();
   res.json(user);
