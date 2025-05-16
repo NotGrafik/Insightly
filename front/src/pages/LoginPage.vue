@@ -17,7 +17,7 @@ import LoginForm from '@/components/LoginForm.vue';
         >
           <img src="@/assets/Insightly_logo.png" class="size-10 absolute"/>
         </div>
-        Insightly Inc.
+        Insightly
       </a>
       <LoginForm />
     </div>
