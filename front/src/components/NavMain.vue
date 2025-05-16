@@ -16,6 +16,9 @@ import {
 } from '@/components/ui/sidebar'
 import { ChevronRight, type LucideIcon } from 'lucide-vue-next'
 import { ref } from 'vue'
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
 
 defineProps<{
   items: {
@@ -32,14 +35,19 @@ defineProps<{
 
 const activeItem = ref<string | null>(null)
 
-function setActive(itemTitle: string) {
-  if (activeItem.value === itemTitle)
+function setActive(itemTitle: string, url?: string) {
+  if (activeItem.value === itemTitle) {
     activeItem.value = null
-  else
+    localStorage.setItem('CurrentNav', itemTitle);
+    if (url) router.push(url)
+  } else {
     activeItem.value = itemTitle
+    localStorage.setItem('CurrentNav', itemTitle);
+    if (url) router.push(url)
+  }
 }
 
-setActive('Home');
+setActive(localStorage.getItem('CurrentNav'))
 </script>
 
 <template>
@@ -54,7 +62,7 @@ setActive('Home');
       >
         <SidebarMenuItem :class="activeItem === item.title && 'bg-gray-100 dark:bg-gray-600 rounded-md'">
           <CollapsibleTrigger as-child>
-            <SidebarMenuButton :tooltip="item.title" @click="setActive(item.title)">
+            <SidebarMenuButton :tooltip="item.title" @click="setActive(item.title, item.url)">
               <component :is="item.icon" v-if="item.icon" />
               <span>{{ item.title }}</span>
             </SidebarMenuButton>

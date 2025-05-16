@@ -42,6 +42,7 @@ const handleSubmit = async () => {
     });
 
     if (response.ok) {
+      localStorage.setItem('CurrentNav', 'Home');
       router.push('/home');
     } else if (response.status === 401) {
       formErrors.globalError = 'Email or password is incorrect';
