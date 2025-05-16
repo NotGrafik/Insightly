@@ -29,11 +29,32 @@ import {
   Sparkles,
 } from 'lucide-vue-next';
 
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
+
 const props = defineProps({
   user: { type: Object, required: true },
 });
 
 const { isMobile } = useSidebar();
+
+const logout = async () => {;
+  try {
+    const response = await fetch('/api/auth/logout', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (response.ok) {
+      router.push('/');
+    }
+  } catch (error) {
+    console.error('Network error during logout:', error);
+  }
+};
 </script>
 
 <template>
@@ -76,10 +97,6 @@ const { isMobile } = useSidebar();
           </DropdownMenuLabel>
           <DropdownMenuSeparator />
           <DropdownMenuGroup>
-            <DropdownMenuItem>
-              <Sparkles />
-              Upgrade to Pro
-            </DropdownMenuItem>
           </DropdownMenuGroup>
           <DropdownMenuSeparator />
           <DropdownMenuGroup>
@@ -97,7 +114,7 @@ const { isMobile } = useSidebar();
             </DropdownMenuItem>
           </DropdownMenuGroup>
           <DropdownMenuSeparator />
-          <DropdownMenuItem>
+          <DropdownMenuItem @click="logout">
             <LogOut />
             Log out
           </DropdownMenuItem>
