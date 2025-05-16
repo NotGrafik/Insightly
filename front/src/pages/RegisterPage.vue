@@ -23,12 +23,16 @@ import { Label } from '@/components/ui/label'
 import { Eye } from 'lucide-vue-next'
 import { EyeClosed } from 'lucide-vue-next'
 
+import { useRouter } from 'vue-router';
+
 // Champs liés au formulaire
 const firstName = ref('')
 const lastName = ref('')
 const email = ref('')
 const password = ref('')
 const showPassword = ref(false)
+
+const router = useRouter();
 
 const formErrors = reactive({
   firstName: '',
@@ -99,7 +103,6 @@ const handleSubmit = () => {
     return
   }
 
-  // Si validation ok → envoyer
   fetch('/api/register', {
     method: 'POST',
     headers: {
@@ -118,6 +121,7 @@ const handleSubmit = () => {
     })
     .then((data) => {
       console.log('Success:', data)
+      router.push('/auth/login');
     })
     .catch((error) => {
       console.error('Error:', error)
