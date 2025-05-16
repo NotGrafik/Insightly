@@ -8,6 +8,7 @@ export const containerClass =
 
 <script setup lang="ts">
 import { ref, reactive } from 'vue'
+import { useRouter } from 'vue-router'
 import { z } from 'zod'
 import { Button } from '@/components/ui/button'
 import { watch } from 'vue'
