@@ -35,7 +35,7 @@ import {
             <BreadcrumbList>
               <BreadcrumbSeparator class="hidden md:block" />
               <BreadcrumbItem>
-                <BreadcrumbPage>Home</BreadcrumbPage>
+                <BreadcrumbPage>My survey</BreadcrumbPage>
               </BreadcrumbItem>
             </BreadcrumbList>
           </Breadcrumb>

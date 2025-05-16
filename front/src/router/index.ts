@@ -3,6 +3,7 @@ import RegisterPage from '@/pages/RegisterPage.vue'
 import LoginPage from '@/pages/LoginPage.vue'
 import LandingPage from '@/pages/LandingPage.vue'
 import HomePage from '@/pages/HomePage.vue'
+import MySurveyPage from '@/pages/MySurveyPage.vue'
 
 const routes = [
   {
@@ -20,6 +21,10 @@ const routes = [
   {
     path: '/home',
     component: HomePage
+  },
+  {
+    path: '/me/survey',
+    component: MySurveyPage
   }
 ]
 

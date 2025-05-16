@@ -1,5 +1,5 @@
 <script setup>
-import NavItems from '@/components/NavItems.vue';
+import NavMain from '@/components/NavMain.vue';
 import NavUser from '@/components/NavUser.vue';
 import TeamSwitcher from '@/components/TeamSwitcher.vue';
 import {
@@ -21,6 +21,8 @@ import {
   PieChart,
   Settings2,
   SquareTerminal,
+  House,
+  FileChartColumn
 } from 'lucide-vue-next';
 
 const props = defineProps({
@@ -40,31 +42,31 @@ const data = {
   teams: [
     {
       name: 'Insightly',
-      logo: GalleryVerticalEnd
-    }
+      logo: GalleryVerticalEnd,
+    },
   ],
-  items: [
+  navMain: [
     {
-      name: 'Home',
+      title: 'Home',
       url: '/home',
-      icon: Frame,
+      icon: House,
+      isActive: true,
     },
     {
-      name: 'My survey',
+      title: 'My survey',
       url: '/me/survey',
-      icon: PieChart,
+      icon: FileChartColumn,
     },
   ],
-};
+}
 </script>
-
 <template>
   <Sidebar v-bind="props">
     <SidebarHeader>
       <TeamSwitcher :teams="data.teams" />
     </SidebarHeader>
     <SidebarContent>
-      <NavItems :items="data.items" />
+      <NavMain :items="data.navMain" />
     </SidebarContent>
     <SidebarFooter>
       <NavUser :user="data.user" />
