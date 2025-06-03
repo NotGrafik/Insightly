@@ -5,6 +5,7 @@ import dotenv from 'dotenv';
 import cookieParser from 'cookie-parser';
 
 import authRoutes from './routes/authRoutes.js';
+import surveyRoutes from './routes/surveyRoutes.js';
 import connectDB from './config/db.js';
 
 dotenv.config();
@@ -20,6 +21,7 @@ app.use(cookieParser());
 
 // Routes
 app.use('/auth', authRoutes);
+app.use('/survey', surveyRoutes);
 
 connectDB().then(() => {
   app.listen(3001, () => {
