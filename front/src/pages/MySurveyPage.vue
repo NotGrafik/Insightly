@@ -4,6 +4,5 @@ import PageTemplate from './PageTemplate.vue';
 
 <template>
   <PageTemplate pageInfos="My Surveys">
-    caca
   </PageTemplate>
 </template>

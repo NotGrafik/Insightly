@@ -22,6 +22,17 @@ import {
     SidebarTrigger,
 } from '@/components/ui/sidebar';
 
+function stockNavState() {
+    localStorage.setItem(
+        'stockNavState',
+        localStorage.getItem('stockNavState') === 'true' ? 'false' : 'true'
+    );
+    console.log(
+        'stockNavState',
+        localStorage.getItem('stockNavState') === 'true' ? 'false' : 'true'
+    );
+    
+}
 </script>
 
 <template>
@@ -31,7 +42,7 @@ import {
             <header
                 class="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">
                 <div class="flex items-center gap-2 px-4">
-                    <SidebarTrigger @click="console.log('triggger')" class="-ml-1" />
+                    <SidebarTrigger @click="stockNavState" class="-ml-1" />
                     <Separator orientation="vertical" class="mr-2 h-4" />
                     <Breadcrumb>
                         <BreadcrumbList>
