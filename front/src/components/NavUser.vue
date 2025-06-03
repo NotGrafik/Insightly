@@ -5,6 +5,8 @@ import {
   AvatarImage,
 } from '@/components/ui/avatar';
 
+import { onMounted } from 'vue';
+
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -30,12 +32,48 @@ import {
 } from 'lucide-vue-next';
 
 import { useRouter } from 'vue-router';
+import { reactive } from 'vue';
 
 const router = useRouter();
 
-const props = defineProps({
+/*const props = defineProps({
   user: { type: Object, required: true },
+});*/
+
+const user = reactive({
+  name: '',
+  email: '',
+  avatar: '',
 });
+
+const parseJwt = (token) => {
+  try {
+    return JSON.parse(atob(token.split('.')[1]));
+  } catch (e) {
+    return null;
+  }
+};
+
+const getCookie = (name) => {
+  const value = `; ${document.cookie}`;
+  const parts = value.split(`; ${name}=`);
+  if (parts.length === 2) return parts.pop().split(';').shift();
+};
+
+onMounted(() => {
+  const token = getCookie('token');
+  if (token) {
+    const decodedToken = parseJwt(token);
+    if (decodedToken) {
+      user.name = decodedToken.name;
+      user.email = decodedToken.email;
+      user.avatar = `https://avatar.vercel.fun/api/avatar?text=${decodedToken.name.charAt(0).toUpperCase()}&fontSize=100&fontWeight=800`;
+    }
+  }
+
+  console.log(user);
+});
+
 
 const { isMobile } = useSidebar();
 
@@ -49,6 +87,7 @@ const logout = async () => {;
     });
 
     if (response.ok) {
+      localStorage.removeItem('activeItem');
       router.push('/');
     }
   } catch (error) {

@@ -27,12 +27,12 @@ export const login = async (req, res) => {
             return res.status(401).json({ error: "Mot de passe incorrect." });
         }
 
-        const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+        const token = jwt.sign({ id: user._id, name: user.firstName + " " + user.lastName, email: user.email }, process.env.JWT_SECRET, {
             expiresIn: '1d',
         });
 
         res.cookie('token', token, {
-            httpOnly: true,
+            httpOnly: false,
             maxAge: 86400000,
         });
         res.status(200).json({ message: "Connexion réussie." });
