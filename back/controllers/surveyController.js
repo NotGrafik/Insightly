@@ -1,4 +1,5 @@
 import Sondage from '../schema/survey.js';
+import jwt from 'jsonwebtoken';
 
 export const getAllSondages = async (req, res) => {
     try {
@@ -7,13 +8,19 @@ export const getAllSondages = async (req, res) => {
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
-    };
+};
 
+export const create = async (req, res) => {
+    try {
+        const newSondage = new Sondage(req.body);
+        const savedSondage = await newSondage.save();
+        res.json(savedSondage);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+};
 
-    // back/middlewares/authMiddleware.js
-    import jwt from 'jsonwebtoken';
-
-    export const authenticate = (req, res, next) => {
+/*export const authenticate = (req, res, next) => {
     const token = req.cookies.token;
     if (!token) return res.status(401).json({ error: 'Unauthorized' });
 
@@ -23,4 +30,4 @@ export const getAllSondages = async (req, res) => {
     } catch {
         res.status(403).json({ error: 'Invalid token' });
     }
-};
+};*/
