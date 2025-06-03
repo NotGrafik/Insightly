@@ -1,10 +1,6 @@
-<script>
-export const description = 'A sidebar that collapses to icons.';
-export const iframeHeight = '800px';
-export const containerClass = 'w-full h-full';
-</script>
-
 <script setup>
+import { ref, onMounted } from 'vue';
+import SurveyList from '@/components/SurveyList.vue';
 import AppSidebar from '@/components/AppSidebar.vue';
 import {
   Breadcrumb,
@@ -21,6 +17,25 @@ import {
   SidebarTrigger,
 } from '@/components/ui/sidebar';
 
+const data = ref(null);
+
+const fetchData = async () => {
+  try {
+    const response = await fetch('/api/survey/all');
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+    const json = await response.json();
+    data.value = json;
+    console.log('Fetched data:', json);
+  } catch (error) {
+    console.error('Fetch error:', error);
+  }
+};
+
+onMounted(() => {
+  fetchData();
+});
 </script>
 
 <template>
@@ -42,7 +57,7 @@ import {
         </div>
       </header>
       <div class="flex items-center gap-2 px-4">
-
+        <SurveyList :SurveyList="data" />
       </div>
     </SidebarInset>
   </SidebarProvider>
