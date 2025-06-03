@@ -1,10 +1,21 @@
 import Sondage from '../schema/survey.js';
+import Reponse from '../schema/reponses.js';
 import jwt from 'jsonwebtoken';
 
 export const getAllSondages = async (req, res) => {
     try {
         const sondages = await Sondage.find().populate('createur');
         res.json(sondages);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+};
+
+export const getSondage = async (req, res) => {
+    try {
+        const sondage = await Sondage.findById(req.params.id).populate('createur');
+        if (!sondage) return res.status(404).json({ error: 'Sondage not found' });
+        res.json(sondage);
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
@@ -20,14 +31,15 @@ export const create = async (req, res) => {
     }
 };
 
-/*export const authenticate = (req, res, next) => {
-    const token = req.cookies.token;
-    if (!token) return res.status(401).json({ error: 'Unauthorized' });
-
+export const responseToSondage = async (req, res) => {
     try {
-        req.user = jwt.verify(token, process.env.JWT_SECRET);
-        next();
-    } catch {
-        res.status(403).json({ error: 'Invalid token' });
+        const sondage = await Sondage.findById(req.params.id);
+        if (!sondage) return res.status(404).json({ error: 'Sondage not found' });
+        
+        const Reponse = new Reponse(req.body);
+        const savedReponse = await newReponse.save();
+        res.json(savedReponse);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
     }
-};*/
+};
