@@ -31,6 +31,18 @@ export const create = async (req, res) => {
     }
 };
 
+export const deleteSondage = async (req, res) => {
+    try {
+        const sondage = await Sondage.findById(req.params.id);
+        if (!sondage) return res.status(404).json({ error: 'Sondage not found' });
+
+        await sondage.remove();
+        res.json({ message: 'Sondage deleted' });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+}
+
 export const responseToSondage = async (req, res) => {
     try {
         const sondage = await Sondage.findById(req.params.id);
