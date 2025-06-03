@@ -27,7 +27,6 @@ const fetchData = async () => {
     }
     const json = await response.json();
     data.value = json;
-    console.log('Fetched data:', json);
   } catch (error) {
     console.error('Fetch error:', error);
   }
@@ -57,7 +56,10 @@ onMounted(() => {
         </div>
       </header>
       <div class="flex items-center gap-2 px-4">
-        <SurveyList :SurveyList="data" />
+        <SurveyList v-if="data" :SurveyList="data" />
+        <div v-else>
+          <span>Loading...</span>
+        </div>
       </div>
     </SidebarInset>
   </SidebarProvider>
