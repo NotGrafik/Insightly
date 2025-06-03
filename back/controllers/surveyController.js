@@ -43,3 +43,15 @@ export const responseToSondage = async (req, res) => {
         res.status(500).json({ error: err.message });
     }
 };
+
+export const getResponses = async (req, res) => {
+    try {
+        const sondage = await Sondage.findById(req.params.id);
+        if (!sondage) return res.status(404).json({ error: 'Sondage not found' });
+
+        const reponses = await Reponse.find({ sondage: req.params.id });
+        res.json(reponses);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+};
