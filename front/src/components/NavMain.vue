@@ -16,6 +16,9 @@ import {
 } from '@/components/ui/sidebar'
 import { ChevronRight, type LucideIcon } from 'lucide-vue-next'
 import { ref } from 'vue'
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
 
 defineProps<{
   items: {
@@ -29,9 +32,9 @@ defineProps<{
 const activeItem = ref<string | null>(null)
 
 function setActive(itemTitle: string, url?: string) {
-  if (activeItem.value === itemTitle)
+  if (activeItem.value === itemTitle) {
     activeItem.value = null
-  else
+  } else {
     activeItem.value = itemTitle
     localStorage.setItem('activeItem', itemTitle)
   if (url) {
