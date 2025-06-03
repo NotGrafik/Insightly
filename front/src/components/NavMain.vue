@@ -32,14 +32,15 @@ defineProps<{
 const activeItem = ref<string | null>(null)
 
 function setActive(itemTitle: string, url?: string) {
-  if (activeItem.value === itemTitle) {
-    activeItem.value = null
-  } else {
-    activeItem.value = itemTitle
-    localStorage.setItem('activeItem', itemTitle)
-  if (url) {
-    window.location.href = url
-  }
+    if (activeItem.value === itemTitle) {
+      activeItem.value = null
+    } else {
+      activeItem.value = itemTitle
+      localStorage.setItem('activeItem', itemTitle)
+    }
+    if (url) {
+      window.location.href = url
+    }
 }
 
 setActive(localStorage.getItem('activeItem') || 'Home');
