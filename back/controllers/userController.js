@@ -1,3 +1,4 @@
+import Sondage from '../schema/survey.js';
 import User from '../schema/user.js';
 
 export const getUser = async (req, res) => {
@@ -12,7 +13,7 @@ export const getUser = async (req, res) => {
 
 export const getSurveys = async (req, res) => {
     try {
-        const surveys = Survey.find({ creator: req.user.id });
+        const surveys = await Sondage.find({ creator: req.user.id });
         res.json(surveys);
     } catch (err) {
         res.status(500).json({ error: err.message });

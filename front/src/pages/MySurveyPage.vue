@@ -1,13 +1,38 @@
 <script setup>
+import { onMounted, ref } from 'vue';
+import SurveyList from '@/components/SurveyList.vue';
 import PageTemplate from './PageTemplate.vue';
 
 import { Button } from '@/components/ui/button';
+
+const data = ref(null);
+
+const fetchData = async () => {
+  try {
+    const response = await fetch('/api/user/surveys');
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+    const json = await response.json();
+    data.value = json;
+  } catch (error) {
+    console.error('Fetch error:', error);
+  }
+};
+
+onMounted(() => {
+  fetchData();
+});
 </script>
 
 <template>
   <PageTemplate pageInfos="My Surveys">
-    <Button @click="$router.push('/me/survey/create')">
-      + Create survey
-    </Button>
+    <div class="w-full flex flex-col gap-2 items-end">
+      <Button @click="$router.push('/me/survey/create')">
+        + Create survey
+      </Button> 
+        <SurveyList v-if="data" :SurveyList="data" :is-user-survey="true" />
+        <div v-else class="text-center text-gray-500">Loading surveys...</div>
+    </div>
   </PageTemplate>
 </template>

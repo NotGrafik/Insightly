@@ -4,7 +4,7 @@ import { onMounted, defineProps } from 'vue';
 import { useSidebar } from '@/components/ui/sidebar/utils';
 import { Button } from '@/components/ui/button';
 
-import { Share } from 'lucide-vue-next';
+import { Share, ChartArea } from 'lucide-vue-next';
 
 import {
     Card,
@@ -21,6 +21,10 @@ const props = defineProps({
     SurveyList: {
         type: Array,
         default: () => [],
+    },
+    isUserSurvey: {
+        type: Boolean,
+        default: false,
     },
 });
 
@@ -45,14 +49,17 @@ onMounted(() => {
         <Card v-for="survey in SurveyList" :key="survey.id" class="hover:shadow-lg transition-shadow duration-200">
             <CardHeader>
                 <CardTitle>{{ survey.name }}</CardTitle>
-                <CardDescription>by {{ survey.creator.firstName + ' ' + survey.creator.lastName }}</CardDescription>
+                <CardDescription>by {{ isUserSurvey ? ('You') : (survey.creator.firstName + ' ' + survey.creator.lastName) }}</CardDescription>
             </CardHeader>
             <CardContent>
                 <p class="text-sm text-gray-600">{{ survey.description }}</p>
             </CardContent>
             <CardFooter class="flex justify-between items-center">
-                <Button variant="secondary">
-                    Reply 
+                <Button v-if="isUserSurvey">
+                    <ChartArea class="w-4 h-4" /> Analytics
+                </Button>
+                <Button v-else>
+                    Reply
                 </Button>
                 <Button variant="outline" size="icon">
                     <Share class="w-4 h-4" />

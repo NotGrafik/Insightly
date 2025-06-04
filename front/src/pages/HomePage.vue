@@ -25,7 +25,7 @@ onMounted(() => {
 
 <template>
   <PageTemplate pageInfos="Home" >
-      <SurveyList v-if="data" :SurveyList="data" />
+      <SurveyList v-if="data" :SurveyList="data" :is-user-survey="false" />
       <div v-else class="text-center text-gray-500">Loading surveys...</div>
   </PageTemplate>
 </template>
