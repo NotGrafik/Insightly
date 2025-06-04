@@ -4,7 +4,7 @@ import jwt from 'jsonwebtoken';
 
 export const getAllSondages = async (req, res) => {
     try {
-        const sondages = await Sondage.find().populate('createur');
+        const sondages = await Sondage.find().populate('creator');
         res.json(sondages);
     } catch (err) {
         res.status(500).json({ error: err.message });
@@ -13,7 +13,7 @@ export const getAllSondages = async (req, res) => {
 
 export const getSondage = async (req, res) => {
     try {
-        const sondage = await Sondage.findById(req.params.id).populate('createur');
+        const sondage = await Sondage.findById(req.params.id).populate('creator');
         if (!sondage) return res.status(404).json({ error: 'Sondage not found' });
         res.json(sondage);
     } catch (err) {
