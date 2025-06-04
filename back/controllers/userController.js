@@ -9,3 +9,12 @@ export const getUser = async (req, res) => {
         res.status(500).json({ error: err.message });
     }
 };
+
+export const getSurveys = async (req, res) => {
+    try {
+        const surveys = Survey.find({ creator: req.user.id });
+        res.json(surveys);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+};
