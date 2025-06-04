@@ -44,11 +44,11 @@ onMounted(() => {
     <div :class="state === 'collapsed' ? 'grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 w-full' : 'grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 w-full'">
         <Card v-for="survey in SurveyList" :key="survey.id" class="hover:shadow-lg transition-shadow duration-200">
             <CardHeader>
-                <CardTitle>{{ survey.nom }}</CardTitle>
-                <CardDescription>by {{ survey.createur.firstName + ' ' + survey.createur.lastName }}</CardDescription>
+                <CardTitle>{{ survey.name }}</CardTitle>
+                <CardDescription>by {{ survey.creator.firstName + ' ' + survey.creator.lastName }}</CardDescription>
             </CardHeader>
             <CardContent>
-                JSP
+                <p class="text-sm text-gray-600">{{ survey.description }}</p>
             </CardContent>
             <CardFooter class="flex justify-between items-center">
                 <Button variant="secondary">
