@@ -2,6 +2,7 @@
 import { cn } from '@/lib/utils';
 import { useEventListener, useMediaQuery, useVModel } from '@vueuse/core';
 import { TooltipProvider } from 'reka-ui';
+import { getCookie } from '@/lib/utils.js';
 import { computed, ref } from 'vue';
 import {
   provideSidebarContext,
@@ -23,8 +24,12 @@ const emits = defineEmits(['update:open']);
 const isMobile = useMediaQuery('(max-width: 768px)');
 const openMobile = ref(false);
 
+// Lire le cookie avant de définir `open`
+const savedOpen = getCookie(SIDEBAR_COOKIE_NAME);
+const initialOpen = savedOpen !== null ? savedOpen === 'true' : props.defaultOpen;
+
 const open = useVModel(props, 'open', emits, {
-  defaultValue: props.defaultOpen ?? false,
+  defaultValue: initialOpen,
   passive: props.open === undefined,
 });
 

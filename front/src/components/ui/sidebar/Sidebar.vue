@@ -15,6 +15,7 @@ const props = defineProps({
 });
 
 const { isMobile, state, openMobile, setOpenMobile } = useSidebar();
+
 </script>
 
 <template>
