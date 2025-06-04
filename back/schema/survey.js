@@ -10,7 +10,7 @@ const QuestionSchema = new Schema({
 
 const SondageSchema = new Schema({
   name: { type: String, required: true },
-  description: { type: String, required: true };
+  description: { type: String, required: true },
   creator: { type: Types.ObjectId, ref: 'User', required: true },
   questions: [QuestionSchema]
 }, { timestamps: true })
