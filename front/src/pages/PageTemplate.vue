@@ -41,7 +41,7 @@ import {
                     </Breadcrumb>
                 </div>
             </header>
-            <div class="flex items-center gap-2 px-4">
+            <div class="flex items-center gap-2 px-4 w-full">
                 <slot></slot>
             </div>
         </SidebarInset>
