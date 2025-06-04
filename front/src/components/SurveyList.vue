@@ -62,6 +62,7 @@ onMounted(() => {
     console.log('Mounted SurveyList component', props.SurveyList);
 });
 
+const urlOrigin = window.location.origin;
 </script>
 
 <template>
@@ -103,7 +104,7 @@ onMounted(() => {
                         </Label>
                         <Input
                             id="link"
-                            default-value="https://shadcn-vue.com/docs/installation/"
+                            :default-value="`${urlOrigin}/survey/${survey._id}`"
                         />
                         </div>
                         <Button type="submit" size="sm" class="px-3">
