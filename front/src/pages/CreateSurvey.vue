@@ -6,6 +6,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
+import { Trash } from 'lucide-vue-next';
 
 let user ;
 
@@ -41,7 +42,7 @@ const questionTypes = ['open', 'multiple choices', 'single choice'];
 function addQuestion() {
     survey.questions.push({
         title: '',
-        type: 'text',
+        type: 'open',
         responses: [],
     });
 }
@@ -56,6 +57,12 @@ function submitSurvey() {
         .then((data) => console.log('Survey created:', data))
         .catch((err) => console.error('Error:', err));
 }
+
+function removeQuestion(index) {
+    if (survey.questions.length > 1) {
+        survey.questions.splice(index, 1);
+    }
+}
 </script>
 
 <template>
@@ -68,15 +75,22 @@ function submitSurvey() {
 
                 <div v-for="(question, index) in survey.questions" :key="index">
                     <Card class="mb-4">
-                        <CardHeader>
+                        <CardHeader class="flex justify-between items-start flex-row">
                             <CardTitle>Question {{ index + 1 }}</CardTitle>
+                            <Button v-if="survey.questions.length > 1" variant="outline" size="icon" @click="removeQuestion(index)">
+                                <Trash class="w-4 h-4" />
+                            </Button>
+                            <Button v-else variant="disabled" size="icon" disabled>
+                                <Trash class="w-4 h-4" />
+                            </Button>
+
                         </CardHeader>
                         <CardContent class="space-y-4">
                             <Input v-model="question.title" placeholder="Question Title" />
 
                             <Select v-model="question.type">
                                 <SelectTrigger>
-                                    <SelectValue placeholder="Select question type" />
+                                    <SelectValue />
                                 </SelectTrigger>
                                 <SelectContent>
                                     <SelectItem v-for="type in questionTypes" :key="type" :value="type">
@@ -85,7 +99,7 @@ function submitSurvey() {
                                 </SelectContent>
                             </Select>
 
-                            <div v-if="question.type !== 'open'">
+                            <div v-if="question.type !== 'open'" class="space-y-2">
                                 <div v-for="(response, optIdx) in question.responses" :key="optIdx"
                                     class="flex gap-2 mb-2">
                                     <Input v-model="question.responses[optIdx]" placeholder="Option text" />
