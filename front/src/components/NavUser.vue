@@ -143,14 +143,6 @@ const logout = async () => {;
               <BadgeCheck />
               Account
             </DropdownMenuItem>
-            <DropdownMenuItem>
-              <CreditCard />
-              Billing
-            </DropdownMenuItem>
-            <DropdownMenuItem>
-              <Bell />
-              Notifications
-            </DropdownMenuItem>
           </DropdownMenuGroup>
           <DropdownMenuSeparator />
           <DropdownMenuItem @click="logout">
