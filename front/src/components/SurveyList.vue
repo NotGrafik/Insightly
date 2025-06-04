@@ -30,6 +30,12 @@ const props = defineProps({
 
 const { state } = useSidebar();
 
+function formatDescirption(description) {
+    if (!description) return '';
+    return description.length > 180 ? description.slice(0, 180) + '...' : description;
+}
+
+
 watch(
     () => state.value,
     (newState) => {
@@ -45,15 +51,17 @@ onMounted(() => {
 </script>
 
 <template>
-    <div :class="state === 'collapsed' ? 'grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 w-full' : 'grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 w-full'">
-        <Card v-for="survey in SurveyList" :key="survey.id" class="hover:shadow-lg transition-shadow duration-200">
-            <CardHeader>
-                <CardTitle>{{ survey.name }}</CardTitle>
-                <CardDescription>by {{ isUserSurvey ? ('You') : (survey.creator.firstName + ' ' + survey.creator.lastName) }}</CardDescription>
-            </CardHeader>
-            <CardContent>
-                <p class="text-sm text-gray-600">{{ survey.description }}</p>
-            </CardContent>
+    <div :class="state === 'collapsed' ? 'grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 w-full' : 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full'">
+        <Card v-for="survey in SurveyList" :key="survey.id" class="hover:shadow-lg transition-shadow duration-200 flex flex-col justify-between">
+            <div>
+                <CardHeader>
+                    <CardTitle>{{ survey.name }}</CardTitle>
+                    <CardDescription>by {{ isUserSurvey ? ('You') : (survey.creator.firstName + ' ' + survey.creator.lastName) }}</CardDescription>
+                </CardHeader>
+                <CardContent>
+                    <p class="text-sm text-gray-600">{{ formatDescirption(survey.description) }}</p>
+                </CardContent>
+            </div>
             <CardFooter class="flex justify-between items-center">
                 <Button v-if="isUserSurvey">
                     <ChartArea class="w-4 h-4" /> Analytics
