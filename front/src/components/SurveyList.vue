@@ -1,10 +1,11 @@
 <script setup>
-import { onMounted, defineProps } from 'vue';
+import { onMounted, defineProps, ref } from 'vue';
 
 import { useSidebar } from '@/components/ui/sidebar/utils';
 import { Button } from '@/components/ui/button';
+import confetti from 'canvas-confetti'
 
-import { Share, ChartArea, Copy } from 'lucide-vue-next';
+import { Share, ChartArea, Copy, Check } from 'lucide-vue-next';
 
 import {
     Card,
@@ -63,6 +64,25 @@ onMounted(() => {
 });
 
 const urlOrigin = window.location.origin;
+
+const copiedSurveyId = ref(null)
+
+function copyToClipboard(link, surveyId) {
+    navigator.clipboard.writeText(link).then(() => {
+        copiedSurveyId.value = surveyId
+
+        // 🎉 Lance les confettis
+        confetti({
+            particleCount: 100,
+            spread: 100,
+            origin: { y: 0.6 }
+        });
+
+        setTimeout(() => {
+            copiedSurveyId.value = null
+        }, 2000)
+    })
+}
 </script>
 
 <template>
@@ -107,10 +127,15 @@ const urlOrigin = window.location.origin;
                             :default-value="`${urlOrigin}/survey/${survey._id}`"
                         />
                         </div>
-                        <Button type="submit" size="sm" class="px-3">
-                        <span class="sr-only">Copy</span>
-                        <Copy class="w-4 h-4" />
+                        <Button
+                            type="button"
+                            size="sm"
+                            class="px-3 flex items-center justify-center"
+                            @click="copyToClipboard(`${urlOrigin}/survey/${survey._id}`, survey._id)"
+                        >
+                            <component :is="copiedSurveyId === survey._id ? Check : Copy" class="w-4 h-4 transition-transform duration-300" />
                         </Button>
+
                     </div>
                     <DialogFooter class="sm:justify-start">
                         <DialogClose as-child>
