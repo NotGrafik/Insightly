@@ -26,6 +26,14 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog'
+
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/ui/tooltip'
+
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 
@@ -119,24 +127,35 @@ function copyToClipboard(link, surveyId) {
                     </DialogHeader>
                     <div class="flex items-center space-x-2">
                         <div class="grid flex-1 gap-2">
-                        <Label for="link" class="sr-only">
-                            Link
-                        </Label>
-                        <Input
+                            <Label for="link" class="sr-only">Link</Label>
+                            <Input
                             id="link"
                             :default-value="`${urlOrigin}/survey/${survey._id}`"
-                        />
+                            />
                         </div>
-                        <Button
-                            type="button"
-                            size="sm"
-                            class="px-3 flex items-center justify-center"
-                            @click="copyToClipboard(`${urlOrigin}/survey/${survey._id}`, survey._id)"
-                        >
-                            <component :is="copiedSurveyId === survey._id ? Check : Copy" class="w-4 h-4 transition-transform duration-300" />
-                        </Button>
 
-                    </div>
+                        <TooltipProvider>
+                            <Tooltip :open="copiedSurveyId === survey._id">
+                            <TooltipTrigger as-child>
+                                <Button
+                                type="button"
+                                size="sm"
+                                class="px-3 flex items-center justify-center"
+                                @click="copyToClipboard(`${urlOrigin}/survey/${survey._id}`, survey._id)"
+                                >
+                                <component
+                                    :is="copiedSurveyId === survey._id ? Check : Copy"
+                                    class="w-4 h-4 transition-transform duration-300"
+                                />
+                                </Button>
+                            </TooltipTrigger>
+                            <TooltipContent side="top" class=" text-white">
+                                Copied!
+                            </TooltipContent>
+                            </Tooltip>
+                        </TooltipProvider>
+                        </div>
+
                     <DialogFooter class="sm:justify-start">
                         <DialogClose as-child>
                         <Button type="button" variant="secondary">
