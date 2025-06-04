@@ -67,7 +67,7 @@ onMounted(() => {
     if (decodedToken) {
       user.name = decodedToken.name;
       user.email = decodedToken.email;
-      user.avatar = `https://avatar.vercel.fun/api/avatar?text=${decodedToken.name.charAt(0).toUpperCase()}&fontSize=100&fontWeight=800`;
+      user.avatar = `https://avatar.vercel.sh/${decodedToken.name}&fontSize=100&fontWeight=800`;
     }
   }
 
