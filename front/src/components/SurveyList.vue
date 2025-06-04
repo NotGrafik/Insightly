@@ -4,7 +4,7 @@ import { onMounted, defineProps } from 'vue';
 import { useSidebar } from '@/components/ui/sidebar/utils';
 import { Button } from '@/components/ui/button';
 
-import { Share, ChartArea } from 'lucide-vue-next';
+import { Share, ChartArea, Copy } from 'lucide-vue-next';
 
 import {
     Card,
@@ -14,6 +14,20 @@ import {
     CardHeader,
     CardTitle,
 } from '@/components/ui/card'
+
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+
 import { watch } from 'vue';
 
 
@@ -69,9 +83,43 @@ onMounted(() => {
                 <Button v-else>
                     Reply
                 </Button>
-                <Button variant="outline" size="icon">
-                    <Share class="w-4 h-4" />
-                </Button>
+                <Dialog>
+                    <DialogTrigger as-child>
+                    <Button variant="outline" size="icon">
+                        <Share class="w-4 h-4" />
+                    </Button>
+                    </DialogTrigger>
+                    <DialogContent class="sm:max-w-md">
+                    <DialogHeader>
+                        <DialogTitle>Share link</DialogTitle>
+                        <DialogDescription>
+                        Anyone who has this link will be able to view this.
+                        </DialogDescription>
+                    </DialogHeader>
+                    <div class="flex items-center space-x-2">
+                        <div class="grid flex-1 gap-2">
+                        <Label for="link" class="sr-only">
+                            Link
+                        </Label>
+                        <Input
+                            id="link"
+                            default-value="https://shadcn-vue.com/docs/installation/"
+                        />
+                        </div>
+                        <Button type="submit" size="sm" class="px-3">
+                        <span class="sr-only">Copy</span>
+                        <Copy class="w-4 h-4" />
+                        </Button>
+                    </div>
+                    <DialogFooter class="sm:justify-start">
+                        <DialogClose as-child>
+                        <Button type="button" variant="secondary">
+                            Close
+                        </Button>
+                        </DialogClose>
+                    </DialogFooter>
+                    </DialogContent>
+                </Dialog>
             </CardFooter>
         </Card>
     </div>
