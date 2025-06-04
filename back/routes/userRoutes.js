@@ -4,6 +4,6 @@ import { authenticate } from '../middlewares/authMiddleware.js';
 
 const router = express.Router();
 router.get('/get', authenticate, getUser);
-router.get('/survey', authenticate, getSurveys);
+router.get('/surveys', authenticate, getSurveys);
 
 export default router;
