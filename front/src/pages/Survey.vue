@@ -1,11 +1,12 @@
 <script setup>
 import { ref, onMounted } from 'vue';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import SurveyStats from '@/components/SurveyStats.vue';
 import SurveyResponse from '@/components/SurveyResponse.vue';
 import PageTemplate from './PageTemplate.vue';
 
 const route = useRoute();
+const router = useRouter();
 const surveyId = route.params.id;
 
 const user = ref(null);
@@ -17,6 +18,8 @@ onMounted(async () => {
     try {
         const userRes = await fetch('/api/user/get');
         user.value = await userRes.json();
+
+        if(userRes.status === 401) router.push({path: '/auth/login', query: { redirect: route.fullPath }});
 
         const surveyRes = await fetch(`/api/survey/${surveyId}`);
         survey.value = await surveyRes.json();

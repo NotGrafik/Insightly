@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, reactive, watch } from 'vue';
-import { useRouter } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -15,7 +15,7 @@ import { Label } from '@/components/ui/label';
 
 import { Eye, EyeClosed } from 'lucide-vue-next'
 
-
+const route = useRoute();
 const router = useRouter();
 
 const email = ref('');
@@ -43,7 +43,8 @@ const handleSubmit = async () => {
 
     if (response.ok) {
       localStorage.setItem('CurrentNav', 'Home');
-      router.push('/home');
+      const redirectPath = route.query.redirect || '/home';
+      router.push(redirectPath);
     } else if (response.status === 401) {
       formErrors.globalError = 'Email or password is incorrect';
     } else {

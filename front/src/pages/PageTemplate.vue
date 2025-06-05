@@ -20,6 +20,11 @@ import {
     SidebarProvider,
     SidebarTrigger,
 } from '@/components/ui/sidebar';
+import { ArrowLeft } from 'lucide-vue-next';
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
+
 </script>
 
 <template>
@@ -33,7 +38,7 @@ import {
                     <Separator orientation="vertical" class="mr-2 h-4" />
                     <Breadcrumb>
                         <BreadcrumbList>
-                            <BreadcrumbSeparator class="hidden md:block" />
+                            <ArrowLeft v-if="$route.path !== '/home' && $route.path !== '/me/survey'" class="w-4 h-4" @click="router.back()"/>
                             <BreadcrumbItem>
                                 <BreadcrumbPage>{{ pageInfos }}</BreadcrumbPage>
                             </BreadcrumbItem>
