@@ -6,8 +6,11 @@ settings:
 
 dependencies:
   '@vueuse/core':
-    specifier: ^13.2.0
-    version: 13.2.0(vue@3.5.14)
+    specifier: ^13.3.0
+    version: 13.3.0(vue@3.5.14)
+  canvas-confetti:
+    specifier: ^1.9.3
+    version: 1.9.3
   class-variance-authority:
     specifier: ^0.7.1
     version: 0.7.1
@@ -18,8 +21,8 @@ dependencies:
     specifier: ^0.510.0
     version: 0.510.0(vue@3.5.14)
   reka-ui:
-    specifier: ^2.2.1
-    version: 2.2.1(vue@3.5.14)
+    specifier: ^2.3.0
+    version: 2.3.0(vue@3.5.14)
   tailwind-merge:
     specifier: ^3.3.0
     version: 3.3.0
@@ -493,14 +496,14 @@ packages:
       - typescript
     dev: false
 
-  /@vueuse/core@13.2.0(vue@3.5.14):
-    resolution: {integrity: sha512-n5TZoIAxbWAQ3PqdVPDzLgIRQOujFfMlatdI+f7ditSmoEeNpPBvp7h2zamzikCmrhFIePAwdEQB6ENccHr7Rg==}
+  /@vueuse/core@13.3.0(vue@3.5.14):
+    resolution: {integrity: sha512-uYRz5oEfebHCoRhK4moXFM3NSCd5vu2XMLOq/Riz5FdqZMy2RvBtazdtL3gEcmDyqkztDe9ZP/zymObMIbiYSg==}
     peerDependencies:
       vue: ^3.5.0
     dependencies:
       '@types/web-bluetooth': 0.0.21
-      '@vueuse/metadata': 13.2.0
-      '@vueuse/shared': 13.2.0(vue@3.5.14)
+      '@vueuse/metadata': 13.3.0
+      '@vueuse/shared': 13.3.0(vue@3.5.14)
       vue: 3.5.14
     dev: false
 
@@ -508,8 +511,8 @@ packages:
     resolution: {integrity: sha512-rAyLGEuoBJ/Il5AmFHiziCPdQzRt88VxR+Y/A/QhJ1EWtWqPBBAxTAFaSkviwEuOEZNtW8pvkPgoCZQ+HxqW1A==}
     dev: false
 
-  /@vueuse/metadata@13.2.0:
-    resolution: {integrity: sha512-kPpzuQCU0+D8DZCzK0iPpIcXI+6ufWSgwnjJ6//GNpEn+SHViaCtR+XurzORChSgvpHO9YC8gGM97Y1kB+UabA==}
+  /@vueuse/metadata@13.3.0:
+    resolution: {integrity: sha512-42IzJIOYCKIb0Yjv1JfaKpx8JlCiTmtCWrPxt7Ja6Wzoq0h79+YVXmBV03N966KEmDEESTbp5R/qO3AB5BDnGw==}
     dev: false
 
   /@vueuse/shared@12.8.2:
@@ -520,8 +523,8 @@ packages:
       - typescript
     dev: false
 
-  /@vueuse/shared@13.2.0(vue@3.5.14):
-    resolution: {integrity: sha512-vx9ZPDF5HcU9up3Jgt3G62dMUfZEdk6tLyBAHYAG4F4n73vpaA7J5hdncDI/lS9Vm7GA/FPlbOmh9TrDZROTpg==}
+  /@vueuse/shared@13.3.0(vue@3.5.14):
+    resolution: {integrity: sha512-L1QKsF0Eg9tiZSFXTgodYnu0Rsa2P0En2LuLrIs/jgrkyiDuJSsPZK+tx+wU0mMsYHUYEjNsuE41uqqkuR8VhA==}
     peerDependencies:
       vue: ^3.5.0
     dependencies:
@@ -618,6 +621,10 @@ packages:
   /caniuse-lite@1.0.30001718:
     resolution: {integrity: sha512-AflseV1ahcSunK53NfEs9gFWgOEmzr0f+kaMFA4xiLZlr9Hzt7HxcSpIFcnNCUkz6R6dWKa54rUz3HUmI3nVcw==}
     dev: true
+
+  /canvas-confetti@1.9.3:
+    resolution: {integrity: sha512-rFfTURMvmVEX1gyXFgn5QMn81bYk70qa0HLzcIOSVEyl57n6o9ItHeBtUSWdvKAPY0xlvBHno4/v3QPrT83q9g==}
+    dev: false
 
   /chokidar@3.6.0:
     resolution: {integrity: sha512-7VT13fmjotKpGipCW9JEQAusEPE+Ei8nl6/g4FBAmIm0GOOLMua9NDDo/DWp0ZAxCr3cPq5ZpBqmPAQgDda2Pw==}
@@ -1043,8 +1050,8 @@ packages:
     dependencies:
       picomatch: 2.3.1
 
-  /reka-ui@2.2.1(vue@3.5.14):
-    resolution: {integrity: sha512-oLHiyBn6gTIQGnTnv8G5LQuFp9j8HuUNl0qdnW3XPhFb/07hrxzFpjo2kt/jxOZive+n/XWDbOjSj2h9Hih3qA==}
+  /reka-ui@2.3.0(vue@3.5.14):
+    resolution: {integrity: sha512-HKvJej9Sc0KYEvTAbsGHgOxpEWL4FWSR70Q6Ld+bVNuaCxK6LP3jyTtyTWS+A44hHA9/aYfOBZ1Q8WkgZsGZpA==}
     peerDependencies:
       vue: '>= 3.2.0'
     dependencies:

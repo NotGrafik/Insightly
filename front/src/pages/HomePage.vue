@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted, computed } from 'vue';
+import { ref, onMounted, computed, nextTick, watchEffect } from 'vue';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -7,6 +7,12 @@ import { X, Search } from 'lucide-vue-next';
 
 import PageTemplate from './PageTemplate.vue';
 import SurveyList from '@/components/SurveyList.vue';
+
+const prefixRef = ref(null);
+const prefixWidth = ref(0);
+
+const glowInput = ref(false);
+
 
 const data = ref([]);
 const searchQuery = ref('');
@@ -17,18 +23,24 @@ const fetchData = async () => {
   data.value = await res.json();
 };
 
-onMounted(() => fetchData());
-
 const handleTab = () => {
   const trimmed = searchQuery.value.trim().toLowerCase();
-  if (['user', 'title'].includes(trimmed) && !filters.value.includes(trimmed)) {
-    filters.value.push(trimmed);
+  if (['user'].includes(trimmed) && !filters.value.includes(trimmed)) {
+    filters.value.push(trimmed.charAt(0).toUpperCase() + trimmed.slice(1));
+    glowInput.value = true;
     searchQuery.value = '';
+    prefixWidth.value = prefixRef.value.offsetWidth * 3.2;
+
+    setTimeout(() => {
+      glowInput.value = false;
+    }, 400); // Durée du glow
   }
 };
 
 const removeFilter = (filter) => {
   filters.value = filters.value.filter(f => f !== filter);
+    prefixWidth.value = prefixRef.value.offsetWidth / 3.2;
+
 };
 
 const filteredSurveys = computed(() => {
@@ -42,6 +54,31 @@ const filteredSurveys = computed(() => {
     return survey.name.toLowerCase().includes(query);
   });
 });
+
+const handleKeyDown = (e) => {
+  if (e.key === 'Escape' && filters.value.length) {
+    filters.value.pop();
+    nextTick(updatePrefixWidth);
+  } else if (e.key === 'Backspace' && searchQuery.value === '' && filters.value.length) {
+    filters.value.pop();
+    nextTick(updatePrefixWidth);
+  }
+};
+
+const updatePrefixWidth = () => {
+  if (prefixRef.value) {
+    prefixWidth.value = prefixRef.value.offsetWidth;
+  }
+};
+
+onMounted(() => {
+  fetchData();
+  updatePrefixWidth();
+});
+
+watchEffect(() => {
+  nextTick(() => updatePrefixWidth());
+});
 </script>
 
 <template>
@@ -49,24 +86,35 @@ const filteredSurveys = computed(() => {
     <div class="w-full flex flex-col">
       <div class="mb-6">
         <div class="relative w-full">
-          <div class="flex flex-wrap items-center gap-2 mb-2">
-            <Badge v-for="filter in filters" :key="filter" class="flex items-center gap-1">
-              {{ filter }}
-              <X class="w-3 h-3 cursor-pointer" @click="removeFilter(filter)" />
-            </Badge>
+          <div
+            class="absolute inset-y-0 left-2 flex items-center gap-2 z-10 pointer-events-none"
+            ref="prefixRef"
+          >
+            <Search class="w-4 h-4 text-muted-foreground" />
+            <div class="flex gap-1">
+              <Badge
+                v-for="filter in filters"
+                :key="filter"
+                :class="[
+                  'px-2 py-0.5 text-xs font-medium pointer-events-auto',
+                  animatedBadge === filter ? 'badge-animated' : ''
+                ]"
+              >
+                {{ filter }}
+                <X class="w-3 h-3 cursor-pointer" @click.stop="removeFilter(filter)" />
+              </Badge>
+            </div>
           </div>
-          <div class="relative">
-            <Search class="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
-            <Input
-              v-model="searchQuery"
-              placeholder="Search surveys… (e.g. user <Tab>)"
-              class="pl-10"
-              @keydown.tab.prevent="handleTab"
-            />
-          </div>
+          <Input
+            v-model="searchQuery"
+            :style="{ paddingLeft: `${prefixWidth + 16}px` }"
+            placeholder="Search surveys… (e.g. user <Tab>)"
+            :class="['transition-all', { 'glow-effect': glowInput }]"
+            @keydown.tab.prevent="handleTab"
+            @keydown="handleKeyDown"
+          />
         </div>
       </div>
-
       <SurveyList v-if="filteredSurveys.length" :SurveyList="filteredSurveys" :is-user-survey="false" />
       <div v-else class="text-center text-gray-500">No surveys found</div>
     </div>
@@ -77,5 +125,26 @@ const filteredSurveys = computed(() => {
 input:focus {
   outline: none;
   box-shadow: 0 0 0 2px var(--ring);
+}
+
+input {
+  transition: padding-left 0.2s ease;
+}
+
+@keyframes input-glow {
+  0% {
+    box-shadow: 0 0 0px rgb(93, 155, 255);
+  }
+  50% {
+    box-shadow: 0 0 10px rgb(64, 130, 255);
+  }
+  100% {
+    box-shadow: 0 0 0px rgb(46, 107, 255);
+  }
+
+}
+
+.glow-effect {
+  animation: input-glow 0.4s ease-out;
 }
 </style>
