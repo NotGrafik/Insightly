@@ -53,7 +53,7 @@ const filteredSurveys = computed(() => {
   const query = searchQuery.value.trim().toLowerCase();
 
   return data.value.filter((survey) => {
-    if (filters.value.includes('user')) {
+    if (filters.value.includes('User')) {
       const fullName = `${survey.creator.firstName} ${survey.creator.lastName}`.toLowerCase();
       return fullName.includes(query);
     }
