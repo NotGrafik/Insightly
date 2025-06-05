@@ -21,7 +21,7 @@ onMounted(async () => {
         const surveyRes = await fetch(`/api/survey/${surveyId}`);
         survey.value = await surveyRes.json();
 
-        isOwner.value = survey.value.creator?.id === user.value.id;
+        isOwner.value = survey.value.creator?._id === user.value._id;
     } catch (error) {
         console.error('Error loading survey:', error);
     } finally {
@@ -34,8 +34,8 @@ onMounted(async () => {
     <PageTemplate :pageInfos="`Survey: ${survey?.name || ''}`">
         <div v-if="loading" class="text-center text-gray-500">Loading survey...</div>
         <div v-else>
-            <!-- <SurveyStats :survey="survey" /> -->
-            <SurveyResponse :survey="survey" :user="user" />
+            <SurveyStats v-if="isOwner === true" :survey="survey" />
+            <SurveyResponse v-if="isOwner === false" :survey="survey" :user="user" />
         </div>
     </PageTemplate>
 </template>
