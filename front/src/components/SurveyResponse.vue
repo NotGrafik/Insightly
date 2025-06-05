@@ -69,7 +69,7 @@ const submitAnswers = async () => {
 
         <div class="w-full max-w-3xl space-y-6">
             <div v-for="(question, index) in survey.questions" :key="question._id">
-                <Card>
+                <Card class='w-full max-w-2xl'>
                     <CardHeader>
                         <CardTitle>Question {{ index + 1 }}</CardTitle>
                     </CardHeader>
