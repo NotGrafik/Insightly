@@ -68,8 +68,8 @@ const submitAnswers = async () => {
         <p class="text-gray-500 mb-8 text-center max-w-2xl">{{ survey.description }}</p>
 
         <div class="w-full max-w-3xl space-y-6">
-            <div v-for="(question, index) in survey.questions" :key="question._id">
-                <Card class='w-full max-w-2xl'>
+            <div class="w-full" v-for="(question, index) in survey.questions" :key="question._id">
+                <Card>
                     <CardHeader>
                         <CardTitle>Question {{ index + 1 }}</CardTitle>
                     </CardHeader>
