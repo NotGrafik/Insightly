@@ -48,10 +48,11 @@ export const responseToSondage = async (req, res) => {
         const sondage = await Sondage.findById(req.params.id);
         if (!sondage) return res.status(404).json({ error: 'Sondage not found' });
         
-        const Reponse = new Reponse(req.body);
-        const savedReponse = await newReponse.save();
+        const reponseInstance = new Reponse(req.body);
+        const savedReponse = await reponseInstance.save();
         res.json(savedReponse);
     } catch (err) {
+        console.error(err);
         res.status(500).json({ error: err.message });
     }
 };

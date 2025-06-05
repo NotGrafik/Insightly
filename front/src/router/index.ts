@@ -5,6 +5,7 @@ import LandingPage from '@/pages/LandingPage.vue'
 import HomePage from '@/pages/HomePage.vue'
 import MySurveyPage from '@/pages/MySurveyPage.vue'
 import CreateSurvey from '@/pages/CreateSurvey.vue'
+import Survey from '@/pages/Survey.vue'
 
 const routes = [
   {
@@ -30,6 +31,10 @@ const routes = [
   {
     path: '/me/survey/create',
     component: CreateSurvey
+  },
+  {
+    path: '/survey/:id',
+    component: Survey,
   }
 ]
 
