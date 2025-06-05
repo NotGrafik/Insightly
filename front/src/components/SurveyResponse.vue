@@ -18,13 +18,11 @@ const props = defineProps({
     user: Object,
 });
 
-// Réponses utilisateur selon type de question
 const answers = ref(props.survey.questions.map((q) => {
     if (q.type === 'multiple choices') return [];
     else return '';
 }));
 
-// Envoi des réponses
 const submitAnswers = async () => {
     const payload = {
         survey_id: props.survey._id,

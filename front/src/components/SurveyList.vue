@@ -54,6 +54,7 @@ const props = defineProps({
 });
 
 
+const user = ref(null);
 
 const { state } = useSidebar();
 
@@ -71,8 +72,13 @@ watch(
     { immediate: true }
 )
 
-onMounted(() => {
-    console.log('Mounted SurveyList component', props.SurveyList);
+const FilteredSurveyList = ref(null);
+
+onMounted(async () => {
+    const userRes = await fetch('/api/user/get');
+    user.value = await userRes.json();
+
+    if (user) FilteredSurveyList.value = props.SurveyList.filter(survey => survey.creator._id !== user.value._id);
 });
 
 const urlOrigin = window.location.origin;
@@ -99,7 +105,7 @@ function copyToClipboard(link, surveyId) {
 
 <template>
     <div :class="state === 'collapsed' ? 'grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 w-full' : 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full'">
-        <Card v-for="survey in SurveyList" :key="survey.id" class="hover:shadow-lg transition-shadow duration-200 flex flex-col justify-between">
+        <Card v-for="survey in FilteredSurveyList" :key="survey.id" class="hover:shadow-lg transition-shadow duration-200 flex flex-col justify-between">
             <div>
                 <CardHeader>
                     <CardTitle>{{ survey.name }}</CardTitle>
