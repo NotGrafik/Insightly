@@ -33,7 +33,7 @@ onMounted(async () => {
 <template>
     <PageTemplate :pageInfos="`Survey: ${survey?.name || ''}`">
         <div v-if="loading" class="text-center text-gray-500">Loading survey...</div>
-        <div v-else>
+        <div class="w-full" v-else>
             <SurveyStats v-if="isOwner === true" :survey="survey" />
             <SurveyResponse v-if="isOwner === false" :survey="survey" :user="user" />
         </div>

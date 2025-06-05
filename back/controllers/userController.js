@@ -2,6 +2,7 @@ import Sondage from '../schema/survey.js';
 import User from '../schema/user.js';
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
+import bcrypt from 'bcrypt';
 dotenv.config();
 
 export const getUser = async (req, res) => {
@@ -25,10 +26,11 @@ export const getSurveys = async (req, res) => {
 
 export const updateUser = async (req, res) => {
     try {
-        const { firstName, lastName, email, password } = req.body;
+        const { firstName, lastName, email } = req.body;
+        const hashedPassword = await bcrypt.hash(req.body.password, 10);
         const user = await User.findByIdAndUpdate(
             req.user.id,
-            { firstName, lastName, email, password },
+            { firstName, lastName, email, passwordHash: hashedPassword },
             { new: true }
         );
         if (!user) return res.status(404).json({ error: 'User not found' });
