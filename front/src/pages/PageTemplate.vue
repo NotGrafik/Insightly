@@ -38,7 +38,7 @@ const router = useRouter();
                     <Separator orientation="vertical" class="mr-2 h-4" />
                     <Breadcrumb>
                         <BreadcrumbList>
-                            <ArrowLeft v-if="$route.path !== '/home' && $route.path !== '/me/survey'" class="w-4 h-4" @click="router.back()"/>
+                            <ArrowLeft v-if="$route.path !== '/home' && $route.path !== '/me/survey'" class="w-4 h-4 cursor-pointer" @click="router.back()"/>
                             <BreadcrumbItem>
                                 <BreadcrumbPage>{{ pageInfos }}</BreadcrumbPage>
                             </BreadcrumbItem>
