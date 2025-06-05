@@ -1,11 +1,3 @@
-<script lang="ts">
-export const description =
-  'A sign up form with first name, last name, email and password inside a card. There\'s an option to sign up with GitHub and a link to login if you already have an account';
-export const iframeHeight = '600px';
-export const containerClass =
-  'w-full h-screen flex items-center justify-center px-4';
-</script>
-
 <script setup lang="ts">
 import { ref, reactive } from 'vue'
 import { useRouter } from 'vue-router'
