@@ -17,10 +17,16 @@ const glowInput = ref(false);
 const data = ref([]);
 const searchQuery = ref('');
 const filters = ref([]); // ex: ['user']
+const user = ref(null);
 
 const fetchData = async () => {
   const res = await fetch('/api/survey/all');
   data.value = await res.json();
+
+  const userRes = await fetch('/api/user/get');
+  user.value = await userRes.json();
+
+  if (user) data.value = data.value.filter(survey => survey.creator._id !== user.value._id);
 };
 
 const handleTab = () => {
@@ -96,8 +102,7 @@ watchEffect(() => {
                 v-for="filter in filters"
                 :key="filter"
                 :class="[
-                  'px-2 py-0.5 text-xs font-medium pointer-events-auto',
-                  animatedBadge === filter ? 'badge-animated' : ''
+                  'px-2 py-0.5 text-xs font-medium pointer-events-auto'
                 ]"
               >
                 {{ filter }}
