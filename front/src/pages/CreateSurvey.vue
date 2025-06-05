@@ -6,7 +6,13 @@ import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
-import { Trash } from 'lucide-vue-next';
+import { Trash, CheckCircle } from 'lucide-vue-next';
+import { cn } from '@/lib/utils';
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
+
+const submissionSuccess = ref(false);
 
 let user ;
 
@@ -55,6 +61,12 @@ function submitSurvey() {
     })
         .then((res) => res.json())
         .then((data) => console.log('Survey created:', data))
+        .then(() => {
+            submissionSuccess.value = true;
+            setTimeout(() => {
+                router.push('/me/survey');
+            }, 2000);
+        })
         .catch((err) => console.error('Error:', err));
 }
 
@@ -66,6 +78,14 @@ function removeQuestion(index) {
 </script>
 
 <template>
+    <div
+        v-if="submissionSuccess"
+        class="fixed inset-0 z-50 flex flex-col items-center justify-center bg-background transition-opacity duration-500"
+    >
+        <CheckCircle class="text-green-500 w-20 h-20 animate-bounce mb-6" />
+        <h2 class="text-xl font-semibold text-center text-foreground">Votre sondage a bien été créé !</h2>
+        <p class="text-sm text-muted-foreground mt-2">Redirection en cours...</p>
+    </div>
     <PageTemplate pageInfos="Create Survey">
         <div class="flex flex-col items-center justify-center w-full">
             <h1 class="text-2xl font-bold mb-6">Create a New Survey</h1>

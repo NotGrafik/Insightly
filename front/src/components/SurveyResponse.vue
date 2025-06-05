@@ -5,6 +5,13 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
+import { CheckCircle } from 'lucide-vue-next';
+import { cn } from '@/lib/utils';
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
+
+const submissionSuccess = ref(false);
 
 const props = defineProps({
     survey: Object,
@@ -36,7 +43,12 @@ const submitAnswers = async () => {
         });
 
         if (!res.ok) throw new Error('Erreur serveur');
-        alert('Merci pour votre participation !');
+        
+        submissionSuccess.value = true;
+
+        setTimeout(() => {
+            router.push('/home');
+        }, 2000);
     } catch (err) {
         console.error('Erreur de soumission', err);
         alert('Erreur lors de l’envoi des réponses.');
@@ -45,6 +57,14 @@ const submitAnswers = async () => {
 </script>
 
 <template>
+    <div
+        v-if="submissionSuccess"
+        class="fixed inset-0 z-50 flex flex-col items-center justify-center bg-background transition-opacity duration-500"
+    >
+        <CheckCircle class="text-green-500 w-20 h-20 animate-bounce mb-6" />
+        <h2 class="text-xl font-semibold text-center text-foreground">Vos réponses ont bien été prises en compte !</h2>
+        <p class="text-sm text-muted-foreground mt-2">Redirection en cours...</p>
+    </div>
     <div class="flex flex-col items-center w-full">
         <h1 class="text-2xl font-bold mb-2 text-center">{{ survey.name }}</h1>
         <p class="text-gray-500 mb-8 text-center max-w-2xl">{{ survey.description }}</p>
