@@ -1,5 +1,6 @@
 <script setup>
-import { ref, reactive, onMounted, watch } from 'vue';
+import { ref, reactive, onMounted } from 'vue';
+
 import { useUser } from '@/composables/useUser';
 import { useRouter } from 'vue-router';
 import PageTemplate from './PageTemplate.vue';
@@ -32,21 +33,27 @@ const formErrors = reactive({
     firstName: '',
     lastName: '',
     email: '',
-    password: ''
+    password: '',
 });
 
 onMounted(async () => {
-    const response = await useUser();
-    user.value = response.user;
-    loading.value = false;
-});
-
-// Reset errors when fields change
-watch([firstName, lastName, email, password], () => {
-    formErrors.firstName = '';
-    formErrors.lastName = '';
-    formErrors.email = '';
-    formErrors.password = '';
+    fetch('/api/user/get')
+        .then((res) => {
+            if (res.status === 401) {
+                router.push({ path: '/auth/login', query: { redirect: router.currentRoute.value.fullPath } });
+                return;
+            }
+            return res.json();
+        })
+        .then((data) => {
+            user.value = data;
+        })
+        .catch((err) => {
+            console.error('Error fetching user data:', err);
+        })
+        .finally(() => {
+            loading.value = false;
+        });
 });
 
 const schema = z.object({
@@ -70,10 +77,10 @@ const schema = z.object({
         .string()
         .min(8, 'Password must be at least 8 characters')
         .max(64, 'Password must be at most 64 characters')
-        .regex(/[a-z]/, 'Password must contain at least one lowercase letter')
-        .regex(/[A-Z]/, 'Password must contain at least one uppercase letter')
-        .regex(/[0-9]/, 'Password must contain at least one digit')
-        .regex(/[^a-zA-Z0-9]/, 'Password must contain at least one special character')
+        .regex(/[a-z]/, 'Password must contain a lowercase letter')
+        .regex(/[A-Z]/, 'Password must contain an uppercase letter')
+        .regex(/[0-9]/, 'Password must contain a number')
+        .regex(/[^a-zA-Z0-9]/, 'Password must contain a special character'),
 });
 
 const handleSubmit = async () => {
@@ -113,6 +120,8 @@ const handleSubmit = async () => {
         });
 
         if (!res.ok) throw new Error('Échec de la mise à jour');
+
+        console.log('✅ Utilisateur mis à jour :', filteredData);
         router.push('/home');
     } catch (err) {
         console.error('Erreur update user:', err);
@@ -143,21 +152,22 @@ const handleSubmit = async () => {
                     <form autocomplete="off" class="grid gap-4" @submit.prevent="handleSubmit">
                         <div>
                             <Label for="firstName">First Name</Label>
-                            <Input id="firstName" v-model="firstName" :placeholder="user?.firstName || 'First Name'"
-                                :class="formErrors.firstName ? 'border-red-500 ring-1 ring-red-500' : ''" />
-                            <p v-if="formErrors.firstName" class="text-sm text-red-500">{{ formErrors.firstName }}</p>
+                            <Input id="firstName" name="fake-firstname" autocomplete="off" v-model="firstName"
+                                :placeholder="user?.firstName || 'First Name'" :error="formErrors.firstName" />
                         </div>
 
                         <div>
                             <Label for="lastName">Last Name</Label>
-                            <Input id="lastName" v-model="lastName" :placeholder="user?.lastName || 'Last Name'"
+                            <Input id="lastName" name="fake-lastname" autocomplete="off" v-model="lastName"
+                                :placeholder="user?.lastName || 'Last Name'" :error="formErrors.lastName"
                                 :class="formErrors.lastName ? 'border-red-500 ring-1 ring-red-500' : ''" />
                             <p v-if="formErrors.lastName" class="text-sm text-red-500">{{ formErrors.lastName }}</p>
                         </div>
 
                         <div>
                             <Label for="email">Email</Label>
-                            <Input id="email" type="email" v-model="email" :placeholder="user?.email || 'Email'"
+                            <Input id="email" name="fake-email" type="email" autocomplete="off" v-model="email"
+                                :placeholder="user?.email || 'Email'" :error="formErrors.email"
                                 :class="formErrors.email ? 'border-red-500 ring-1 ring-red-500' : ''" />
                             <p v-if="formErrors.email" class="text-sm text-red-500">{{ formErrors.email }}</p>
                         </div>
@@ -165,7 +175,7 @@ const handleSubmit = async () => {
                         <div>
                             <Label for="password">Password</Label>
                             <div class="relative w-full">
-                                <Input id="password" autocomplete="new-password"
+                                <Input id="password" name="fake-password" autocomplete="new-password"
                                     :type="showPassword ? 'text' : 'password'" v-model="password"
                                     placeholder="••••••••••" class="pr-10"
                                     :class="formErrors.password ? 'border-red-500 ring-1 ring-red-500' : ''" />
@@ -180,7 +190,7 @@ const handleSubmit = async () => {
                         </div>
 
                         <div class="flex justify-end">
-                            <Button type="submit">Update Account</Button>
+                            <Button @click="handleSubmit">Update Account</Button>
                         </div>
                     </form>
                 </CardContent>

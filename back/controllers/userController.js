@@ -9,6 +9,7 @@ export const getUser = async (req, res) => {
     try {
         const user = await User.findById(req.user.id);
         if (!user) return res.status(404).json({ error: 'User not found' });
+        console.log("User found:", user);
         res.json(user);
     } catch (err) {
         res.status(500).json({ error: err.message });
@@ -27,7 +28,11 @@ export const getSurveys = async (req, res) => {
 export const updateUser = async (req, res) => {
     try {
         const { firstName, lastName, email } = req.body;
-        const hashedPassword = await bcrypt.hash(req.body.password, 10);
+        let hashedPassword = req.user.passwordHash;
+        if (req.body.password) {
+            const salt = await bcrypt.genSalt(10);
+            hashedPassword = await bcrypt.hash(req.body.password, salt);
+        }
         const user = await User.findByIdAndUpdate(
             req.user.id,
             { firstName, lastName, email, passwordHash: hashedPassword },
