@@ -38,7 +38,9 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 
 import { watch } from 'vue';
+import { useRouter } from 'vue-router';
 
+const router = useRouter();
 
 const props = defineProps({
     SurveyList: {
@@ -109,7 +111,7 @@ function copyToClipboard(link, surveyId) {
                 <Button v-if="isUserSurvey">
                     <ChartArea class="w-4 h-4" /> Analytics
                 </Button>
-                <Button v-else>
+                <Button v-else @click="router.push(`/survey/${survey._id}`)">
                     Reply
                 </Button>
                 <Dialog>
