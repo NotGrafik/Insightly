@@ -55,10 +55,10 @@ const toggleDarkMode = () => {
 </script>
 
 <template>
-    <SidebarProvider>
+    <SidebarProvider class="z-90">
         <AppSidebar />
         <SidebarInset>
-            <header
+            <header 
                 class="flex mt-4 mb-6 shrink-0 items-center gap-2 transition-[width,height] ease-linear justify-between px-4">
                 <div class="flex items-center gap-2">
                     <SidebarTrigger class="-ml-1" />
@@ -74,9 +74,9 @@ const toggleDarkMode = () => {
                     </Breadcrumb>
                 </div>
                 <div>
-                    <Button variant="outline" size="icon" @click="toggleDarkMode">
-                        <Sun v-if="!isDark" class="w-4 h-4" />
-                        <Moon v-else class="w-4 h-4" />
+                    <Button variant="outline" class="cursor-pointer" size="icon" @click="toggleDarkMode">
+                        <Sun v-if="!isDark" class="size-4" />
+                        <Moon v-else class="size-4" />
                     </Button>
                 </div>
             </header>

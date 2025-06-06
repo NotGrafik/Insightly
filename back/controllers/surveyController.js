@@ -36,9 +36,11 @@ export const deleteSondage = async (req, res) => {
         const sondage = await Sondage.findById(req.params.id);
         if (!sondage) return res.status(404).json({ error: 'Sondage not found' });
 
-        await sondage.remove();
+        await Reponse.deleteMany({ survey_id: sondage._id })
+        await sondage.deleteOne();
         res.json({ message: 'Sondage deleted' });
     } catch (err) {
+        console.error(err);
         res.status(500).json({ error: err.message });
     }
 }
