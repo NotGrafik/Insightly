@@ -7,6 +7,7 @@ import MySurveyPage from '@/pages/MySurveyPage.vue'
 import CreateSurvey from '@/pages/CreateSurvey.vue'
 import Survey from '@/pages/Survey.vue'
 import AccountPage from '@/pages/AccountPage.vue'
+import Cookies from 'js-cookie'
 
 const routes = [
   {
@@ -23,29 +24,44 @@ const routes = [
   },
   {
     path: '/home',
-    component: HomePage
+    component: HomePage,
+    meta: { requiresAuth: true }
   },
   {
     path: '/me/survey',
-    component: MySurveyPage
+    component: MySurveyPage,
+    meta: { requiresAuth: true }
   },
   {
     path: '/me/survey/create',
-    component: CreateSurvey
+    component: CreateSurvey,
+    meta: { requiresAuth: true }
   },
   {
     path: '/survey/:id',
     component: Survey,
+    meta: { requiresAuth: true }
   },
   {
     path: '/me',
-    component: AccountPage
+    component: AccountPage,
+    meta: { requiresAuth: true }
   }
 ]
 
 const router = createRouter({
   history: createWebHistory(),
   routes
+})
+
+router.beforeEach((to, from, next) => {
+  const token = Cookies.get('token')
+
+  if (to.meta.requiresAuth && !token) {
+    next({ path: '/' })
+  } else {
+    next()
+  }
 })
 
 export default router
