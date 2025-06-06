@@ -175,7 +175,7 @@ async function isAlreadyReplied(surveyId) {
                                 />
                                 </Button>
                             </TooltipTrigger>
-                            <TooltipContent side="top" class=" text-white">
+                            <TooltipContent side="top" class="text-primary-foreground">
                                 Copied!
                             </TooltipContent>
                             </Tooltip>
