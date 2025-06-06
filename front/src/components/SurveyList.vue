@@ -188,7 +188,7 @@ onMounted(() => {
                 }}</CardDescription
               >
             </div>
-            <Popover>
+            <Popover v-if="isUserSurvey">
               <PopoverTrigger as-child>
                 <Button variant="outline" size="icon" class="ml-auto">
                   <EllipsisVertical class="w-4 h-4" />
