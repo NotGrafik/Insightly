@@ -98,7 +98,7 @@ async function isAlreadyReplied(surveyId) {
     }
 
     const tokenCookie = getCookie('token');
-    const userId = tokenCookie ? JSON.parse(decodeURIComponent(tokenCookie)).id : null;
+    const userId = tokenCookie ? decodeURIComponent(tokenCookie).id : null;
     if (!userId) return false;
 
     try {
