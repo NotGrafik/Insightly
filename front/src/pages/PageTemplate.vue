@@ -1,7 +1,7 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 
-defineProps({
+const props = defineProps({
     pageInfos: {
         type: String,
         required: true,
@@ -40,6 +40,7 @@ onMounted(() => {
         document.documentElement.classList.remove('dark');
         isDark.value = false;
     }
+    localStorage.setItem('activeItem', props.pageInfos)
 });
 
 const toggleDarkMode = () => {
