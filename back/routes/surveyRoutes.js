@@ -1,5 +1,5 @@
 import express from 'express';
-import { getAllSondages, getSondage, deleteSondage, create, responseToSondage, getResponses } from '../controllers/surveyController.js';
+import { getAllSondages, getSondage, deleteSondage, create, responseToSondage, getResponses, isResponse } from '../controllers/surveyController.js';
 import { authenticate } from '../middlewares/authMiddleware.js';
 
 const router = express.Router();
