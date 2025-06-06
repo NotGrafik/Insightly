@@ -2,6 +2,7 @@
 import NavMain from '@/components/NavMain.vue';
 import NavUser from '@/components/NavUser.vue';
 import TeamSwitcher from '@/components/TeamSwitcher.vue';
+import InsightlyLogo from '@/assets/Insightly_logo.png';
 import {
   Sidebar,
   SidebarContent,
@@ -42,7 +43,7 @@ const data = {
   teams: [
     {
       name: 'Insightly',
-      logo: GalleryVerticalEnd,
+      logo: InsightlyLogo,
     },
   ],
   navMain: [
