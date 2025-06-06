@@ -125,7 +125,7 @@ async function isAlreadyReplied(surveyId) {
                     <CardDescription>by {{ isUserSurvey ? ('You') : (survey.creator.firstName + ' ' + survey.creator.lastName) }}</CardDescription>
                 </CardHeader>
                 <CardContent>
-                    <p class="text-sm text-gray-600">{{ formatDescirption(survey.description) }}</p>
+                    <p class="text-sm text-secondary-foreground">{{ formatDescirption(survey.description) }}</p>
                 </CardContent>
             </div>
             <CardFooter class="flex justify-between items-center">

@@ -59,7 +59,7 @@ const toggleDarkMode = () => {
         <AppSidebar />
         <SidebarInset>
             <header
-                class="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12 justify-between px-4">
+                class="flex mt-4 mb-6 shrink-0 items-center gap-2 transition-[width,height] ease-linear justify-between px-4">
                 <div class="flex items-center gap-2">
                     <SidebarTrigger class="-ml-1" />
                     <Separator orientation="vertical" class="mr-2 h-4" />
