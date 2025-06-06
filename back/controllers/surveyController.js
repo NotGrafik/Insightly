@@ -68,3 +68,20 @@ export const getResponses = async (req, res) => {
         res.status(500).json({ error: err.message });
     }
 };
+
+export const isResponse = async (req, res) => {
+    try {
+        const existingResponse = await Reponse.findOne({
+            survey_id: req.params.surveyId,
+            'responses.question_id': req.params.questionId
+        });
+
+        if (existingResponse) {
+            res.json(true);
+        } else {
+            res.json(false);
+        }
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+}

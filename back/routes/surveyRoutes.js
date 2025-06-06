@@ -9,5 +9,6 @@ router.get('/all', authenticate, getAllSondages);
 router.get('/:id', authenticate, getSondage);
 router.post('/:id/response', authenticate, responseToSondage);
 router.get('/:id/responses', authenticate, getResponses);
+router.get('/:surveyId/:questionId', authenticate, isResponse);
 
 export default router;
