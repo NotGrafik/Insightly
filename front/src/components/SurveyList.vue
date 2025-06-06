@@ -89,6 +89,31 @@ function copyToClipboard(link, surveyId) {
         }, 2000)
     })
 }
+
+async function isAlreadyReplied(surveyId) {
+    function getCookie(name) {
+        const value = `; ${document.cookie}`;
+        const parts = value.split(`; ${name}=`);
+        if (parts.length === 2) return parts.pop().split(';').shift();
+    }
+
+    const tokenCookie = getCookie('token');
+    const userId = tokenCookie ? JSON.parse(decodeURIComponent(tokenCookie)).id : null;
+    if (!userId) return false;
+
+    try {
+        const response = await fetch(`/api/survey/${surveyId}/responses`);
+        if (!response.ok) {
+            console.error('Failed to fetch responses:', response.statusText);
+            return false;
+        }
+        const responses = await response.json();
+        return responses.some(response => response.user_id === userId);
+    } catch (error) {
+        console.error('Error fetching responses:', error);
+        return false;
+    }
+}
 </script>
 
 <template>
@@ -107,8 +132,11 @@ function copyToClipboard(link, surveyId) {
                 <Button v-if="isUserSurvey" @click="router.push(`/survey/${survey._id}`)">
                     <ChartArea class="w-4 h-4" /> Analytics
                 </Button>
-                <Button v-else @click="router.push(`/survey/${survey._id}`)">
+                <Button v-if="!isUserSurvey && (!isAlreadyReplied(survey._id))" @click="router.push(`/survey/${survey._id}`)">
                     Reply
+                </Button>
+                <Button v-if="isAlreadyReplied(survey._id)" variant="outline" class="border-green-600 text-green-600" disabled>
+                    Already replied !
                 </Button>
                 <Dialog>
                     <DialogTrigger as-child>
