@@ -26,7 +26,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <PageTemplate pageInfos="My Surveys">
+  <PageTemplate pageInfos="My surveys">
     <div class="w-full flex flex-col gap-6">
       <Button class="self-end" @click="$router.push('/me/survey/create')">
         + Create survey

@@ -40,7 +40,6 @@ onMounted(() => {
         document.documentElement.classList.remove('dark');
         isDark.value = false;
     }
-    localStorage.setItem('activeItem', props.pageInfos)
 });
 
 const toggleDarkMode = () => {

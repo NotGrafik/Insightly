@@ -100,17 +100,26 @@ function copyToClipboard(link, surveyId) {
   });
 }
 
-async function isAlreadyReplied(surveyId) {
-  function getCookie(name) {
-    const value = `; ${document.cookie}`;
-    const parts = value.split(`; ${name}=`);
-    if (parts.length === 2) return parts.pop().split(";").shift();
+function getCookie(name) {
+  const value = `; ${document.cookie}`;
+  const parts = value.split(`; ${name}=`);
+  if (parts.length === 2) return parts.pop().split(";").shift();
+}
+
+const parseJwt = (token) => {
+  try {
+    return JSON.parse(atob(token.split('.')[1]));
+  } catch (e) {
+    return null;
   }
+};
 
+async function isAlreadyReplied(surveyId) {  
   const tokenCookie = getCookie("token");
-  const userId = tokenCookie ? decodeURIComponent(tokenCookie).id : null;
+  const decodedToken = parseJwt(tokenCookie);
+  const userId = decodedToken ? decodedToken.id : null;
   if (!userId) return false;
-
+  
   try {
     const response = await fetch(`/api/survey/${surveyId}/responses`);
     if (!response.ok) {
@@ -134,6 +143,7 @@ async function deleteSurvey(surveyId) {
       console.error("Failed to delete survey:", response.statusText);
       return;
     }
+
     window.location.reload();
   } catch (error) {
     console.error("Error deleting survey:", error);
@@ -155,8 +165,15 @@ async function updateSurvey(surveyId) {
   }
 }
 
-onMounted(() => {
+const replyStatusMap = ref({});
+
+onMounted(async () => {
   console.log("SurveyList component mounted", props.SurveyList);
+  
+  for (const survey of props.SurveyList) {
+    const res = await isAlreadyReplied(survey._id);
+    replyStatusMap.value[survey._id] = res;
+  }
 });
 </script>
 
@@ -185,7 +202,8 @@ onMounted(() => {
                   isUserSurvey
                     ? "You"
                     : survey.creator.firstName + " " + survey.creator.lastName
-                }}</CardDescription
+                }}
+                </CardDescription
               >
             </div>
             <Popover v-if="isUserSurvey">
@@ -223,7 +241,7 @@ onMounted(() => {
           </div>
         </CardHeader>
         <CardContent>
-          <p class="text-sm text-secondary-foreground">
+          <p class="text-sm text-secondary-foreground break-words">
             {{ formatDescirption(survey.description) }}
           </p>
         </CardContent>
@@ -233,13 +251,13 @@ onMounted(() => {
           <ChartArea class="w-4 h-4" /> Analytics
         </Button>
         <Button
-          v-if="!isUserSurvey && !isAlreadyReplied(survey._id)"
+          v-if="!isUserSurvey && replyStatusMap[survey._id] === false"
           @click="router.push(`/survey/${survey._id}`)"
         >
           Reply
         </Button>
         <Button
-          v-if="isAlreadyReplied(survey._id) && !isUserSurvey"
+          v-if="replyStatusMap[survey._id] === true && !isUserSurvey"
           variant="outline"
           class="border-green-600 text-green-600"
           disabled

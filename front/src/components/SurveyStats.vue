@@ -15,8 +15,24 @@ const props = defineProps({
 
 const chartData = ref([]);
 
-onMounted(() => {
-  chartData.value = props.survey.questions.map((question) => {
+onMounted(async () => {
+  const questions = props.survey.questions;
+
+  const res = await fetch(`/api/survey/${props.survey._id}/responses`);
+  const rawResponses = await res.json();
+
+  questions.forEach(q => q.responses = []);
+
+  rawResponses.forEach((submission) => {
+    submission.responses.forEach((responseItem) => {
+      const question = questions.find(q => q._id === responseItem.question_id);
+      if (question) {
+        question.responses.push(responseItem.response);
+      }
+    });
+  });
+
+  chartData.value = questions.map((question) => {
     if (question.type === 'open') {
       return {
         type: 'open',
@@ -39,14 +55,15 @@ onMounted(() => {
 });
 </script>
 
+
 <template>
   <div class="space-y-6">
     <Card>
-      <div v-if="props.survey.questions[0].responses.length === 0" class="p-6 text-center">
+      <div v-if="chartData.length === 0" class="text-center p-6">
         <CardTitle class="text-lg font-semibold">No survey data available</CardTitle>
         <CardDescription class="text-sm text-gray-500">Please ensure the survey has questions with responses.</CardDescription>
       </div>
-      <div v-else v-for="(data, index) in chartData" :key="index">
+      <div v-for="(data, index) in chartData" :key="index">
         <CardHeader class="text-lg font-semibold"> Question {{ index + 1 + ': ' + data.title }}</CardHeader>
         <CardContent>
           <CardDescription class="text-sm text-gray-500">

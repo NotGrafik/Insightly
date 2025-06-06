@@ -54,7 +54,7 @@ const data = {
       isActive: true,
     },
     {
-      title: 'My survey',
+      title: 'My surveys',
       url: '/me/survey',
       icon: FileChartColumn,
     },

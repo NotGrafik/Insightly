@@ -43,6 +43,7 @@ const submitAnswers = async () => {
         if (!res.ok) throw new Error('Erreur serveur');
         
         submissionSuccess.value = true;
+        console.log('Réponses soumises avec succès', await res.json());
 
         setTimeout(() => {
             router.push('/home');
@@ -76,12 +77,10 @@ const submitAnswers = async () => {
                     <CardContent class="space-y-4">
                         <p class="font-semibold">{{ question.title }}</p>
 
-                        <!-- Question ouverte -->
                         <div v-if="question.type === 'open'">
                             <Textarea v-model="answers[index]" placeholder="Votre réponse..." rows="3" />
                         </div>
 
-                        <!-- Choix unique -->
                         <div v-else-if="question.type === 'single choice'" class="space-y-2">
                             <div v-for="(option, optIdx) in question.responses" :key="optIdx"
                                 class="flex items-center gap-2">
@@ -91,7 +90,6 @@ const submitAnswers = async () => {
                             </div>
                         </div>
 
-                        <!-- Choix multiples -->
                         <div v-else-if="question.type === 'multiple choices'" class="space-y-2">
                             <div v-for="(option, optIdx) in question.responses" :key="optIdx"
                                 class="flex items-center gap-2">

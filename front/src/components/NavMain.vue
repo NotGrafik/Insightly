@@ -15,7 +15,7 @@ import {
   SidebarMenuSubItem,
 } from '@/components/ui/sidebar'
 import { ChevronRight, type LucideIcon } from 'lucide-vue-next'
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router';
 
 const router = useRouter();
@@ -44,6 +44,8 @@ function setActive(itemTitle: string, url?: string) {
 }
 
 setActive(localStorage.getItem('activeItem') || 'Home');
+console.log(activeItem.value);
+
 </script>
 
 <template>
