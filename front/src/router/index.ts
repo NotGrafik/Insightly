@@ -11,7 +11,7 @@ import AccountPage from '@/pages/AccountPage.vue'
 const routes = [
   {
     path: '/',
-    component: LandingPage
+    component: LoginPage
   },
   {
     path: '/auth/register',
