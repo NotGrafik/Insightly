@@ -4,6 +4,7 @@ import { useRoute, useRouter } from 'vue-router';
 import SurveyStats from '@/components/SurveyStats.vue';
 import SurveyResponse from '@/components/SurveyResponse.vue';
 import PageTemplate from './PageTemplate.vue';
+import { CheckCircle } from 'lucide-vue-next';
 
 const route = useRoute();
 const router = useRouter();
@@ -14,6 +15,31 @@ const survey = ref(null);
 const isOwner = ref(false);
 const loading = ref(true);
 
+
+async function isAlreadyReplied(surveyId) {
+    function getCookie(name) {
+        const value = `; ${document.cookie}`;
+        const parts = value.split(`; ${name}=`);
+        if (parts.length === 2) return parts.pop().split(';').shift();
+    }
+    
+    const tokenCookie = getCookie('token');
+    const userId = tokenCookie ? decodeURIComponent(tokenCookie).id : null;
+    if (!userId) return false;
+    
+    try {
+        const response = await fetch(`/api/survey/${surveyId}/responses`);
+        if (!response.ok) {
+            console.error('Failed to fetch responses:', response.statusText);
+            return false;
+        }
+        const responses = await response.json();
+        return responses.some(response => response.user_id === userId);
+    } catch (error) {
+        console.error('Error fetching responses:', error);
+        return false;
+    }
+}
 onMounted(async () => {
     try {
         const userRes = await fetch('/api/user/get');
@@ -30,13 +56,23 @@ onMounted(async () => {
     } finally {
         loading.value = false;
     }
+
+    if (isAlreadyReplied(surveyId)) setTimeout(() => {router.push('/home');}, 2000);
 });
 </script>
 
 <template>
     <PageTemplate :pageInfos="`Survey: ${survey?.name || ''}`">
-        <div v-if="loading" class="text-center text-gray-500">Loading survey...</div>
-        <div class="w-full" v-else>
+        <div
+            v-if="isAlreadyReplied(surveyId)"
+            class="fixed inset-0 z-50 flex flex-col items-center justify-center bg-background transition-opacity duration-500"
+        >
+            <CheckCircle class="text-green-500 w-20 h-20 animate-bounce mb-6" />
+            <h2 class="text-xl font-semibold text-center text-foreground">Vous avez déjà répondu à ce sondage, merci !</h2>
+            <p class="text-sm text-muted-foreground mt-2">Redirection en cours...</p>
+        </div>
+        <div v-if="loading && (!isAlreadyReplied(surveyId))" class="text-center text-gray-500">Loading survey...</div>
+        <div class="w-full" v-if='!loading && (!isAlreadyReplied(surveyId))'>
             <SurveyStats v-if="isOwner" :survey="survey" />
             <SurveyResponse v-if="!isOwner" :survey="survey" :user="user" />
         </div>
