@@ -129,13 +129,13 @@ async function isAlreadyReplied(surveyId) {
                 </CardContent>
             </div>
             <CardFooter class="flex justify-between items-center">
-                <Button v-if="isUserSurvey && (!isAlreadyReplied(survey._id))" @click="router.push(`/survey/${survey._id}`)">
+                <Button v-if="isUserSurvey" @click="router.push(`/survey/${survey._id}`)">
                     <ChartArea class="w-4 h-4" /> Analytics
                 </Button>
                 <Button v-if="!isUserSurvey && (!isAlreadyReplied(survey._id))" @click="router.push(`/survey/${survey._id}`)">
                     Reply
                 </Button>
-                <Button v-if="isAlreadyReplied(survey._id)" variant="outline" class="border-green-600 text-green-600" disabled>
+                <Button v-if="isAlreadyReplied(survey._id) && !isUserSurvey" variant="outline" class="border-green-600 text-green-600" disabled>
                     Already replied !
                 </Button>
                 <Dialog>
