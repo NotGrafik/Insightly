@@ -27,8 +27,8 @@ onMounted(() => {
 
 <template>
   <PageTemplate pageInfos="My Surveys">
-    <div class="w-full flex flex-col gap-6 items-end">
-      <Button @click="$router.push('/me/survey/create')">
+    <div class="w-full flex flex-col gap-6">
+      <Button class="self-end" @click="$router.push('/me/survey/create')">
         + Create survey
       </Button> 
         <SurveyList v-if="data" :SurveyList="data" :is-user-survey="true" />
