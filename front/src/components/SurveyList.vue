@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, defineProps, ref } from "vue";
+import { onMounted, defineProps, ref, computed } from "vue";
 
 import { useSidebar } from "@/components/ui/sidebar/utils";
 import { Button } from "@/components/ui/button";
@@ -49,6 +49,7 @@ import { Separator } from "@/components/ui/separator";
 
 import { watch } from "vue";
 import { useRouter } from "vue-router";
+import { set } from "zod";
 
 const router = useRouter();
 
@@ -64,6 +65,18 @@ const props = defineProps({
 });
 
 const { state } = useSidebar();
+
+const updatedName = ref("");
+const updatedDescription = ref("");
+const typeButton = computed(() =>
+  updatedName.value === "" && updatedDescription.value === ""
+    ? "disabled"
+    : ""
+);
+
+watch(typeButton, (newVal) => {
+  console.log("typeButton changed to:", newVal);
+});
 
 function formatDescirption(description) {
   if (!description) return "";
@@ -150,9 +163,12 @@ async function deleteSurvey(surveyId) {
 }
 
 async function updateSurvey(surveyId) {
+  if(typeButton.value === "disabled") {
+    return;
+  }
   try {
-    const surveyName = document.getElementById("surveyName").value ? document.getElementById("surveyName").value : props.SurveyList.find(s => s._id === surveyId).name;
-    const surveyDescription = document.getElementById("surveyDescription").value ? document.getElementById("surveyDescription").value : props.SurveyList.find(s => s._id === surveyId).description;
+    const surveyName = updatedName.value ?  updatedName.value : props.SurveyList.find(s => s._id === surveyId).name;
+    const surveyDescription = updatedDescription.value ? updatedDescription.value : props.SurveyList.find(s => s._id === surveyId).description;
     const response = await fetch(`/api/survey/${surveyId}`, {
       method: "PUT",
       headers: {
@@ -169,9 +185,9 @@ async function updateSurvey(surveyId) {
     }
     const data = await response.json();
     console.log("Survey updated successfully:", data);
-    window.location.reload();
   } catch (error) {
     console.error("Error updating survey:", error);
+    return;
   }
   confetti({
     particleCount: 100,
@@ -179,9 +195,8 @@ async function updateSurvey(surveyId) {
     origin: { y: 0.6 },
   });
   setTimeout(() => {
-    copiedSurveyId.value = null;
-  }, 2000);
-  router.push(`/survey/${surveyId}`);
+    window.location.reload();
+  }, 900);
   console.log("Survey updated and redirected to survey page");
 }
 
@@ -258,23 +273,26 @@ onMounted(async () => {
                           <Input
                             id="surveyName"
                             type="text"
+                            v-model="updatedName"
                             :placeholder="survey.name"
                           />
                           <Label for="surveyDescription">Description</Label>
                           <Input
                             id="surveyDescription"
                             type="text"
+                            v-model="updatedDescription"
                             :placeholder="survey.description"
                           />
                         </div>
                       <DialogFooter>
                         <Button
                           type="button"
-                          variant="outline"
+                          :variant="typeButton"
                           @click="updateSurvey(survey._id)"
                         >
                           Save Changes
                         </Button>
+
                       </DialogFooter>
                     </DialogContent>  
                   </Dialog>
