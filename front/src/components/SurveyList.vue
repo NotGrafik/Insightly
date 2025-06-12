@@ -27,14 +27,13 @@ import {
 
 import {
   Dialog,
-  DialogClose,
   DialogContent,
   DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
+} from '@/components/ui/dialog'
 
 import {
   Tooltip,
@@ -152,17 +151,38 @@ async function deleteSurvey(surveyId) {
 
 async function updateSurvey(surveyId) {
   try {
+    const surveyName = document.getElementById("surveyName").value ? document.getElementById("surveyName").value : props.SurveyList.find(s => s._id === surveyId).name;
+    const surveyDescription = document.getElementById("surveyDescription").value ? document.getElementById("surveyDescription").value : props.SurveyList.find(s => s._id === surveyId).description;
     const response = await fetch(`/api/survey/${surveyId}`, {
       method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        name: surveyName,
+        description: surveyDescription,
+      }),
     });
     if (!response.ok) {
-      console.error("Failed to delete survey:", response.statusText);
+      console.error("Failed to update survey:", response.statusText);
       return;
     }
-    router.push("/home");
+    const data = await response.json();
+    console.log("Survey updated successfully:", data);
+    window.location.reload();
   } catch (error) {
-    console.error("Error deleting survey:", error);
+    console.error("Error updating survey:", error);
   }
+  confetti({
+    particleCount: 100,
+    spread: 100,
+    origin: { y: 0.6 },
+  });
+  setTimeout(() => {
+    copiedSurveyId.value = null;
+  }, 2000);
+  router.push(`/survey/${surveyId}`);
+  console.log("Survey updated and redirected to survey page");
 }
 
 const replyStatusMap = ref({});
@@ -213,17 +233,51 @@ onMounted(async () => {
                 </Button>
               </PopoverTrigger>
               <PopoverContent class="w-30 m-0 p-2 flex flex-col items-center">
-                <div
-                  class="text-secondary-foreground flex items-center cursor-pointer relative p-2 rounded group"
-                  @click="updateSurvey(survey._id)"
-                >
-                  <SquarePen class="size-4 mr-2" />
-                  <span
-                    class="relative after:content-[''] after:absolute after:left-0 after:bottom-0 after:h-[2px] after:w-0 after:bg-secondary-foreground after:transition-all after:duration-200 group-hover:after:w-full"
-                  >
-                    Update
-                  </span>
-                </div>
+                  <Dialog>
+                    <DialogTrigger>
+                        <div
+                          class="text-secondary-foreground flex items-center cursor-pointer relative p-2 rounded group"
+                        >
+                        <SquarePen class="size-4 mr-2" />
+                        <span
+                          class="relative after:content-[''] after:absolute after:left-0 after:bottom-0 after:h-[2px] after:w-0 after:bg-secondary-foreground after:transition-all after:duration-200 group-hover:after:w-full"
+                        >
+                          Update
+                        </span>
+                      </div>
+                    </DialogTrigger>
+                    <DialogContent>
+                      <DialogHeader>
+                        <DialogTitle>Edit Survey {{ survey.name }}</DialogTitle>
+                        <DialogDescription>
+                          Make changes to your survey here. Click save when you're done.
+                        </DialogDescription>
+                      </DialogHeader>
+                        <div class="grid gap-4">
+                          <Label for="surveyName">Survey Name</Label>
+                          <Input
+                            id="surveyName"
+                            type="text"
+                            :placeholder="survey.name"
+                          />
+                          <Label for="surveyDescription">Description</Label>
+                          <Input
+                            id="surveyDescription"
+                            type="text"
+                            :placeholder="survey.description"
+                          />
+                        </div>
+                      <DialogFooter>
+                        <Button
+                          type="button"
+                          variant="outline"
+                          @click="updateSurvey(survey._id)"
+                        >
+                          Save Changes
+                        </Button>
+                      </DialogFooter>
+                    </DialogContent>  
+                  </Dialog>
                 <Separator />
                 <div
                   class="text-red-600 flex items-center cursor-pointer relative p-2 rounded group"

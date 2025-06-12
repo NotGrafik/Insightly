@@ -45,6 +45,20 @@ export const deleteSondage = async (req, res) => {
     }
 }
 
+export const updateSondage = async (req, res) => {
+    try {
+        const sondage = await Sondage.findById(req.params.id);
+        if (!sondage) return res.status(404).json({ error: 'Sondage not found' });
+        const updatedSondage = await Sondage.findByIdAndUpdate(req.params.id, req.body, { new: true });
+        res.json(updatedSondage);
+    }
+    catch (err) {
+        console.error(err);
+        res.status(500).json({ error: err.message });
+    }
+}
+
+
 export const responseToSondage = async (req, res) => {
     try {
         const sondage = await Sondage.findById(req.params.id);
