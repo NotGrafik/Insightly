@@ -52,3 +52,53 @@ export const updateUser = async (req, res) => {
         res.status(500).json({ error: err.message });
     }
 }
+
+import FormData from "form-data"; // form-data v4.0.1
+import Mailgun from "mailgun.js";
+
+export const requestPasswordReset = async (req, res) => {
+    const mailgun = new Mailgun(FormData);
+    console.log(process.env.MAILGUN_API_KEY); // doit afficher true
+
+    const mg = mailgun.client({
+        username: "api",
+        key: process.env.MAILGUN_API_KEY,
+    });
+    try {
+        const data = await mg.messages.create("sandboxa2e73fdc20be46a1a2f410f49f70fb8a.mailgun.org", {
+            from: "Mailgun Sandbox <postmaster@sandboxa2e73fdc20be46a1a2f410f49f70fb8a.mailgun.org>",
+            to: ["Pablo Jean Louis <pablopjl64@gmail.com>"],
+            subject: "Reset Password Request",
+            html: `<p>Bonjour,</p>
+                    <p>Vous avez demandé la réinitialisation de votre mot de passe. Veuillez cliquer sur le lien ci-dessous pour réinitialiser votre mot de passe :</p>
+                    <p><a href="http://localhost:5173/reset-password/${req.body.token}">Réinitialiser le mot de passe</a></p>
+                `
+        });
+
+        console.log(data); // logs response data
+    } catch (error) {
+        console.log(error); //logs any error
+    }
+};
+
+
+export const resetPassword = async (req, res) => {
+    const { token } = req.params;
+    const { password } = req.body;
+
+    const user = await User.findOne({
+        resetPasswordToken: token,
+        resetPasswordExpires: { $gt: Date.now() }
+    });
+
+    if (!user) return res.status(400).json({ error: 'Token invalide ou expiré' });
+
+    const salt = await bcrypt.genSalt(10);
+    user.passwordHash = await bcrypt.hash(password, salt);
+    user.resetPasswordToken = undefined;
+    user.resetPasswordExpires = undefined;
+
+    await user.save();
+
+    res.json({ message: 'Mot de passe mis à jour avec succès' });
+};

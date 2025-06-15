@@ -5,7 +5,10 @@ const userSchema = new mongoose.Schema({
   lastName: String,
   email: { type: String, unique: true },
   passwordHash: String,
-  createdAt: { type: Date, default: Date.now }
+  createdAt: { type: Date, default: Date.now },
+
+  resetPasswordToken: String,
+  resetPasswordExpires: Date
 });
 
 
