@@ -29,6 +29,27 @@ const formErrors = reactive({
 // Reset les erreurs quand on tape dans les champs
 watch(email, () => (formErrors.globalError = ''));
 
+const resetPassword = async () => {
+  await fetch('/api/user/forgot-password', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email: "pablopjl64@gmail.com" }),
+    }
+  ).then((response) => {
+    if (response.ok) {
+      alert('A password reset link has been sent to your email.');
+    } else {
+      response.text().then((text) => {
+        console.error('Error sending reset password email:', text);
+        alert('Failed to send reset password email. Please try again later.');
+      });
+    }
+  }).catch((error) => {
+    console.error('Network error during password reset:', error);
+    alert('An error occurred while trying to reset your password. Please try again later.');
+  });
+};
+
 const handleSubmit = async () => {
   formErrors.globalError = '';
 
@@ -43,7 +64,10 @@ const handleSubmit = async () => {
 
     if (response.ok) {
       localStorage.setItem('CurrentNav', 'Home');
-      const redirectPath = route.query.redirect || '/home';
+      let redirectPath = route.query.redirect || '/home';
+      if (Array.isArray(redirectPath)) {
+        redirectPath = redirectPath[0] || '/home';
+      }
       router.push(redirectPath);
     } else if (response.status === 401) {
       formErrors.globalError = 'Email or password is incorrect';
@@ -87,6 +111,7 @@ const handleSubmit = async () => {
                   <a
                     href="#"
                     class="ml-auto text-sm underline-offset-4 hover:underline"
+                    @click="resetPassword"
                   >
                     Forgot your password?
                   </a>
