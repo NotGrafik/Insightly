@@ -12,9 +12,14 @@ import connectDB from './config/db.js';
 dotenv.config();
 const app = express();
 
+const authorizedOrigins = [
+  'https://insightly-sigma.vercel.app',
+  'http://localhost:5173',
+];
+
 // Middlewares
 app.use(cors({
-  origin: 'https://insightly-sigma.vercel.app',
+  origin: authorizedOrigins,
   credentials: true
 }));
 app.use(express.json());
