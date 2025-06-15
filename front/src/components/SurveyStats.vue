@@ -28,7 +28,7 @@ const usersMap = ref({});
 
 async function fetchUser(id) {
   if (usersMap.value[id]) return usersMap.value[id];
-  const res = await fetch(`https://insightly-26vw.onrender.com/user/get/${id}`);
+  const res = await fetch(`https://insightly-26vw.onrender.com/user/other/${id}`);
   const user = await res.json();
   usersMap.value[id] = user;
   return user;

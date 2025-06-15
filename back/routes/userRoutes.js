@@ -4,7 +4,7 @@ import { authenticate } from '../middlewares/authMiddleware.js';
 
 const router = express.Router();
 router.get('/get', authenticate, getUser);
-router.get('/get/:id', authenticate, getOtherUser);
+router.get('/other/:id', authenticate, getOtherUser);
 router.get('/surveys', authenticate, getSurveys);
 router.put('/update', authenticate, updateUser);
 router.post('/forgot-password', requestPasswordReset);
