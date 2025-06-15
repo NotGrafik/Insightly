@@ -9,6 +9,15 @@ import {
     CardTitle
 } from '@/components/ui/card';
 
+import {
+  Table,
+  TableHeader,
+  TableBody,
+  TableRow,
+  TableHead,
+  TableCell
+} from '@/components/ui/table';
+
 const props = defineProps({
   survey: Object
 });
@@ -89,21 +98,31 @@ onMounted(async () => {
             {{ data.type === 'open' ? 'Open responses' : 'Response distribution' }}
           </CardDescription>
           <div v-if="data.type === 'open'" class="overflow-x-auto">
-            <table class="min-w-full divide-y divide-gray-200">
-              <thead class="bg-gray-50">
-                <tr>
-                  <th class="px-4 py-2 text-left text-sm font-medium text-gray-700">Utilisateur</th>
-                  <th class="px-4 py-2 text-left text-sm font-medium text-gray-700">Réponse</th>
-                </tr>
-              </thead>
-              <tbody class="divide-y divide-gray-100">
-                <tr v-for="(response, idx) in data.responses" :key="idx" class="bg-white hover:bg-gray-50">
-                  <td class="px-4 py-2 text-sm text-gray-800 font-semibold">{{ response.user }}</td>
-                  <td class="px-4 py-2 text-sm text-gray-700">{{ response.text }}</td>
-                </tr>
-              </tbody>
-            </table>
+            <Table>
+              <TableHeader>
+                <TableRow class="bg-secondary dark:bg-secondary">
+                  <TableHead class="text-gray-700 dark:text-gray-300">Utilisateur</TableHead>
+                  <TableHead class="text-gray-700 dark:text-gray-300">Réponse</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                <TableRow
+                  v-for="(response, idx) in data.responses"
+                  :key="idx"
+                  class="bg-inherit hover:bg-gray-50 dark:hover:bg-gray-700"
+                >
+                  <TableCell class="font-semibold text-gray-800 dark:text-gray-100">
+                    {{ response.user }}
+                  </TableCell>
+                  <TableCell class="text-gray-700 dark:text-gray-300">
+                    {{ response.text }}
+                  </TableCell>
+                </TableRow>
+              </TableBody>
+            </Table>
           </div>
+
+
 
           <div class="w-full" v-else>
                 <VueApexCharts
