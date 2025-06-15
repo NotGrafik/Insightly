@@ -134,7 +134,7 @@ async function isAlreadyReplied(surveyId) {
   if (!userId) return false;
   
   try {
-    const response = await fetch(`/api/survey/${surveyId}/responses`);
+    const response = await fetch(`https://insightly-26vw.onrender.com/survey/${surveyId}/responses`);
     if (!response.ok) {
       console.error("Failed to fetch responses:", response.statusText);
       return false;
@@ -149,7 +149,7 @@ async function isAlreadyReplied(surveyId) {
 
 async function deleteSurvey(surveyId) {
   try {
-    const response = await fetch(`/api/survey/${surveyId}`, {
+    const response = await fetch(`https://insightly-26vw.onrender.com/survey/${surveyId}`, {
       method: "DELETE",
     });
     if (!response.ok) {
@@ -170,7 +170,7 @@ async function updateSurvey(surveyId) {
   try {
     const surveyName = updatedName.value ?  updatedName.value : props.SurveyList.find(s => s._id === surveyId).name;
     const surveyDescription = updatedDescription.value ? updatedDescription.value : props.SurveyList.find(s => s._id === surveyId).description;
-    const response = await fetch(`/api/survey/${surveyId}`, {
+    const response = await fetch(`https://insightly-26vw.onrender.com/survey/${surveyId}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",

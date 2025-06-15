@@ -79,7 +79,7 @@ const { isMobile } = useSidebar();
 
 const logout = async () => {;
   try {
-    const response = await fetch('/api/auth/logout', {
+    const response = await fetch('https://insightly-26vw.onrender.com/auth/logout', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

@@ -17,7 +17,7 @@ const submissionSuccess = ref(false);
 let user ;
 
 onMounted(() => {
-    fetch('/api/user/get', {
+    fetch('https://insightly-26vw.onrender.com/user/get', {
         method: 'GET',
         headers: { 'Content-Type': 'application/json' },
     })
@@ -54,7 +54,7 @@ function addQuestion() {
 }
 
 function submitSurvey() {
-    fetch('/api/survey/create', {
+    fetch('https://insightly-26vw.onrender.com/survey/create', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(survey),

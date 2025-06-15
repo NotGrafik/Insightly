@@ -93,7 +93,7 @@ const handleSubmit = () => {
     return
   }
 
-  fetch('/api/auth/register', {
+  fetch('https://insightly-26vw.onrender.com/auth/register', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

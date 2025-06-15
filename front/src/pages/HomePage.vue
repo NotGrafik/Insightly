@@ -20,10 +20,10 @@ const filters = ref([]); // ex: ['user']
 const user = ref(null);
 
 const fetchData = async () => {
-  const res = await fetch('/api/survey/all');
+  const res = await fetch('https://insightly-26vw.onrender.com/survey/all');
   data.value = await res.json();
 
-  const userRes = await fetch('/api/user/get');
+  const userRes = await fetch('https://insightly-26vw.onrender.com/user/get');
   user.value = await userRes.json();
 
   if (user) data.value = data.value.filter(survey => survey.creator._id !== user.value._id);
