@@ -14,7 +14,7 @@ const app = express();
 
 // Middlewares
 app.use(cors({
-  origin: 'insightly-sigma.vercel.app',
+  origin: 'https://insightly-sigma.vercel.app',
   credentials: true
 }));
 app.use(express.json());
