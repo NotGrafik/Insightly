@@ -30,7 +30,7 @@ async function isAlreadyReplied(surveyId) {
     if (!userId) return false;
 
     try {
-        const response = await fetch(`https://insightly-26vw.onrender.com/survey/${surveyId}/responses`);
+        const response = await fetch(`/api/survey/${surveyId}/responses`);
         if (!response.ok) {
         console.error("Failed to fetch responses:", response.statusText);
         return false;
@@ -44,7 +44,7 @@ async function isAlreadyReplied(surveyId) {
 }
 onMounted(async () => {
     try {
-        const userRes = await fetch("https://insightly-26vw.onrender.com/user/get");
+        const userRes = await fetch("/api/user/get");
         user.value = await userRes.json();
 
         if (userRes.status === 401) {
@@ -52,7 +52,7 @@ onMounted(async () => {
         return;
         }
 
-        const surveyRes = await fetch(`https://insightly-26vw.onrender.com/survey/${surveyId}`);
+        const surveyRes = await fetch(`/api/survey/${surveyId}`);
         survey.value = await surveyRes.json();
 
         isOwner.value = survey.value.creator?._id === user.value._id;

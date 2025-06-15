@@ -9,7 +9,7 @@ const data = ref(null);
 
 const fetchData = async () => {
   try {
-    const response = await fetch('https://insightly-26vw.onrender.com/user/surveys');
+    const response = await fetch('/api/user/surveys');
     if (!response.ok) {
       throw new Error('Network response was not ok');
     }

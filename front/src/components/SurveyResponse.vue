@@ -34,7 +34,7 @@ const submitAnswers = async () => {
     };
 
     try {
-        const res = await fetch(`https://insightly-26vw.onrender.com/survey/${props.survey._id}/response`, {
+        const res = await fetch(`/api/survey/${props.survey._id}/response`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(payload),

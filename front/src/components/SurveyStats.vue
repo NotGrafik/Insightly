@@ -28,7 +28,7 @@ const usersMap = ref({});
 
 async function fetchUser(id) {
   if (usersMap.value[id]) return usersMap.value[id];
-  const res = await fetch(`https://insightly-26vw.onrender.com/user/other/${id}`);
+  const res = await fetch(`/api/user/other/${id}`);
   const user = await res.json();
   usersMap.value[id] = user;
   return user;
@@ -37,7 +37,7 @@ async function fetchUser(id) {
 onMounted(async () => {
   const questions = props.survey.questions;
 
-  const res = await fetch(`https://insightly-26vw.onrender.com/survey/${props.survey._id}/responses`);
+  const res = await fetch(`/api/survey/${props.survey._id}/responses`);
   const rawResponses = await res.json();
 
   questions.forEach(q => q.responses = []);

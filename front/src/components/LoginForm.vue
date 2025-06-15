@@ -30,7 +30,7 @@ const formErrors = reactive({
 watch(email, () => (formErrors.globalError = ''));
 
 const resetPassword = async () => {
-  await fetch('https://insightly-26vw.onrender.com/user/forgot-password', {
+  await fetch('/api/user/forgot-password', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ email: "pablopjl64@gmail.com" }),
@@ -54,7 +54,7 @@ const handleSubmit = async () => {
   formErrors.globalError = '';
 
   try {
-    const response = await fetch('https://insightly-26vw.onrender.com/auth/login', {
+    const response = await fetch('/api/auth/login', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
