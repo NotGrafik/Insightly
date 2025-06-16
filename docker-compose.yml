@@ -1,0 +1,25 @@
+version: "3.9"
+services:
+  backend:
+    build:
+      context: ./back
+      dockerfile: Dockerfile
+    container_name: insightly-backend
+    ports:
+      - "3001:3001"
+    volumes:
+      - ./back:/app
+    environment:
+      NODE_ENV: development
+
+  frontend:
+    build:
+      context: ./front
+      dockerfile: Dockerfile
+    container_name: insightly-frontend
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./front:/app
+    environment:
+      NODE_ENV: development
