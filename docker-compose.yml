@@ -5,23 +5,23 @@ services:
       - ./back/.env
     build:
       context: ./back
-      dockerfile: Dockerfile
     container_name: insightly-backend
     ports:
       - "3001:3001"
     volumes:
       - ./back:/app
+      - /app/node_modules  # <--- Ne pas écraser node_modules
     environment:
       NODE_ENV: development
 
   frontend:
     build:
       context: ./front
-      dockerfile: Dockerfile
     container_name: insightly-frontend
     ports:
       - "5173:5173"
     volumes:
       - ./front:/app
+      - /app/node_modules  # <--- idem
     environment:
       NODE_ENV: development
