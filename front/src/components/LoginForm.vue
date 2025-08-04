@@ -66,22 +66,27 @@ const handleSubmit = async () => {
       body: JSON.stringify({ email: email.value, password: password.value }),
     });
 
+    const data = await response.json();
+    console.log('Login response:', response.status, data);
+
     if (response.ok) {
       localStorage.setItem('CurrentNav', 'Home');
       let redirectPath = route.query.redirect || '/home';
       if (Array.isArray(redirectPath)) {
         redirectPath = redirectPath[0] || '/home';
       }
+      console.log('Redirecting to:', redirectPath);
       router.push(redirectPath);
     } else if (response.status === 401) {
       formErrors.globalError = 'Email or password is incorrect';
     } else {
-      console.error('Unexpected login error:', await response.text());
+      console.error('Unexpected login error:', data);
     }
   } catch (error) {
     console.error('Network error during login:', error);
   }
 };
+
 
 </script>
 
