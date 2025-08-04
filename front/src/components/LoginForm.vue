@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script setup lang="js">
 import { ref, reactive, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
