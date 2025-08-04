@@ -62,6 +62,7 @@ const handleSubmit = async () => {
       headers: {
         'Content-Type': 'application/json',
       },
+      credentials: 'include',
       body: JSON.stringify({ email: email.value, password: password.value }),
     });
 

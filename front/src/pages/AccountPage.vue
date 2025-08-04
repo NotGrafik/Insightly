@@ -39,7 +39,9 @@ const formErrors = reactive({
 });
 
 onMounted(async () => {
-    fetch(`${API_BASE_URL}/user/get`)
+    fetch(`${API_BASE_URL}/user/get`, {
+        credentials: 'include',
+    })
         .then((res) => {
             if (res.status === 401) {
                 router.push({ path: '/auth/login', query: { redirect: router.currentRoute.value.fullPath } });

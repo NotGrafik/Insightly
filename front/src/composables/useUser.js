@@ -5,7 +5,9 @@ const user = ref(null);
 
 export const useUser = async () => {
     if (!user.value) {
-        const res = await fetch(`${API_BASE_URL}/user/get`);
+        const res = await fetch(`${API_BASE_URL}/user/get`, {
+            credentials: 'include',
+        });
         user.value = await res.json();
     }
     return { user };

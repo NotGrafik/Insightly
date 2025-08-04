@@ -46,7 +46,9 @@ async function isAlreadyReplied(surveyId) {
 }
 onMounted(async () => {
     try {
-        const userRes = await fetch("${API_BASE_URL}/user/get");
+        const userRes = await fetch("${API_BASE_URL}/user/get" , {
+            credentials: "include",
+        });
         user.value = await userRes.json();
 
         if (userRes.status === 401) {

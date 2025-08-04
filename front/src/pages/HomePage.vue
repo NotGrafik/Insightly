@@ -22,7 +22,9 @@ const fetchData = async () => {
   const res = await fetch(`${API_BASE_URL}/survey/all`);
   data.value = await res.json();
 
-  const userRes = await fetch(`${API_BASE_URL}/user/get`);
+  const userRes = await fetch(`${API_BASE_URL}/user/get`, {
+    credentials: 'include',
+  });
   user.value = await userRes.json();
 
   if (user) data.value = data.value.filter(survey => survey.creator._id !== user.value._id);

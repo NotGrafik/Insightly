@@ -21,6 +21,7 @@ let user ;
 onMounted(() => {
     fetch(`${API_BASE_URL}/user/get`, {
         method: 'GET',
+        credentials: 'include',
         headers: { 'Content-Type': 'application/json' },
     })
     .then(res => res.json())
