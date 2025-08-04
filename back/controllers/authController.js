@@ -32,8 +32,10 @@ export const login = async (req, res) => {
         });
 
         res.cookie('token', token, {
-            httpOnly: false,
-            maxAge: 86400000,
+            httpOnly: true,             
+            secure: true,            
+            sameSite: 'None',          
+            maxAge: 86400000,   
         });
         res.status(200).json({ message: "Connexion réussie." });
     } catch (err) {
