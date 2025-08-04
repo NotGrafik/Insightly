@@ -7,11 +7,18 @@ dotenv.config();
 
 export const register = async (req, res) => {
     try {
-        const hashedPassword = await bcrypt.hash(req.body.passwordHash, 10);
-        const user = new User({ ...req.body, passwordHash: hashedPassword });
-        User.insertOne(user);
-        res.json(user);
+        const hashedPassword = await bcrypt.hash(req.body.password, 10);
+        const user = new User({
+            firstName: req.body.firstName,
+            lastName: req.body.lastName,
+            email: req.body.email,
+            passwordHash: hashedPassword
+        });
+
+        await user.save();
+        res.status(201).json(user);
     } catch (error) {
+        console.error('Register error:', error);
         res.status(500).json({ error: "Erreur lors de l'enregistrement de l'utilisateur." });
     }
 };

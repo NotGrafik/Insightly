@@ -104,7 +104,7 @@ const handleSubmit = () => {
       firstName: firstName.value,
       lastName: lastName.value,
       email: email.value,
-      passwordHash: password.value,
+      password: password.value,
     }),
   })
     .then((response) => {
