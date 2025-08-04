@@ -5,6 +5,19 @@ import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 dotenv.config();
 
+export const me = (req, res) => {
+  const token = req.cookies.token;
+  if (!token) return res.status(401).json({ error: 'No token' });
+
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    res.status(200).json({ user: decoded });
+  } catch (err) {
+    res.status(403).json({ error: 'Invalid token' });
+  }
+};
+
+
 export const register = async (req, res) => {
     try {
         const hashedPassword = await bcrypt.hash(req.body.passwordHash, 10);
