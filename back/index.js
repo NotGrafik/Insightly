@@ -17,11 +17,17 @@ const authorizedOrigins = [
   'http://localhost:5173',
 ];
 
-// Middlewares
 app.use(cors({
-  origin: authorizedOrigins,
+  origin: function (origin, callback) {
+    if (!origin || authorizedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   credentials: true
 }));
+
 app.use(express.json());
 app.use(cookieParser());
 
