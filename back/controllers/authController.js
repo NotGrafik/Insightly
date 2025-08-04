@@ -15,8 +15,8 @@ export const register = async (req, res) => {
             passwordHash: hashedPassword
         });
 
-        await user.save();
-        res.status(201).json(user);
+        User.insertOne(user);
+        res.json(user);
     } catch (error) {
         console.error('Register error:', error);
         res.status(500).json({ error: "Erreur lors de l'enregistrement de l'utilisateur." });
