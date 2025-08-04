@@ -15,6 +15,8 @@ import { Label } from '@/components/ui/label';
 
 import { Eye, EyeClosed } from 'lucide-vue-next'
 
+import { API_BASE_URL } from '@/constants/url';
+
 const route = useRoute();
 const router = useRouter();
 
@@ -29,8 +31,9 @@ const formErrors = reactive({
 // Reset les erreurs quand on tape dans les champs
 watch(email, () => (formErrors.globalError = ''));
 
+
 const resetPassword = async () => {
-  await fetch('/api/user/forgot-password', {
+  await fetch(`${API_BASE_URL}/user/forgot-password`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ email: "pablopjl64@gmail.com" }),
@@ -54,7 +57,7 @@ const handleSubmit = async () => {
   formErrors.globalError = '';
 
   try {
-    const response = await fetch('/api/auth/login', {
+    const response = await fetch(`${API_BASE_URL}/auth/login`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

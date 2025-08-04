@@ -3,6 +3,8 @@ import { fileURLToPath, URL } from 'node:url'
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 
+const isProduction = process.env.NODE_ENV === 'production'
+
 export default defineConfig({
   plugins: [vue()],
   resolve: {
@@ -11,12 +13,14 @@ export default defineConfig({
     }
   },
   server: {
-    proxy: {
-      '/api': {
-        target: 'http://backend:3001',
-        changeOrigin: true,
-        rewrite: path => path.replace(/^\/api/, '')
-      }
-    }
-  }
+    proxy: isProduction
+      ? {}
+      : {
+          '/api': {
+            target: 'http://backend:3001',
+            changeOrigin: true,
+            rewrite: path => path.replace(/^\/api/, '')
+          }
+        }
+  },
 })

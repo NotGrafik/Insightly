@@ -9,6 +9,8 @@ import { CheckCircle } from 'lucide-vue-next';
 import { cn } from '@/lib/utils';
 import { useRouter } from 'vue-router';
 
+import { API_BASE_URL } from '@/constants/url';
+
 const router = useRouter();
 
 const submissionSuccess = ref(false);
@@ -34,7 +36,7 @@ const submitAnswers = async () => {
     };
 
     try {
-        const res = await fetch(`/api/survey/${props.survey._id}/response`, {
+        const res = await fetch(`${API_BASE_URL}/survey/${props.survey._id}/response`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(payload),

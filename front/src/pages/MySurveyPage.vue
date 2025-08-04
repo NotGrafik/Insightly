@@ -5,11 +5,13 @@ import PageTemplate from './PageTemplate.vue';
 
 import { Button } from '@/components/ui/button';
 
+import { API_BASE_URL } from '@/constants/url';
+
 const data = ref(null);
 
 const fetchData = async () => {
   try {
-    const response = await fetch('/api/user/surveys');
+    const response = await fetch(`${API_BASE_URL}/user/surveys`);
     if (!response.ok) {
       throw new Error('Network response was not ok');
     }

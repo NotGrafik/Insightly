@@ -7,23 +7,22 @@ import { X, Search } from 'lucide-vue-next';
 
 import PageTemplate from './PageTemplate.vue';
 import SurveyList from '@/components/SurveyList.vue';
+import { API_BASE_URL } from '@/constants/url';
 
 const prefixRef = ref(null);
 const prefixWidth = ref(0);
 
 const glowInput = ref(false);
-
-
 const data = ref([]);
 const searchQuery = ref('');
 const filters = ref([]); // ex: ['user']
 const user = ref(null);
 
 const fetchData = async () => {
-  const res = await fetch('/api/survey/all');
+  const res = await fetch(`${API_BASE_URL}/survey/all`);
   data.value = await res.json();
 
-  const userRes = await fetch('/api/user/get');
+  const userRes = await fetch(`${API_BASE_URL}/user/get`);
   user.value = await userRes.json();
 
   if (user) data.value = data.value.filter(survey => survey.creator._id !== user.value._id);

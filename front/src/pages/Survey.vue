@@ -6,6 +6,8 @@ import SurveyResponse from "@/components/SurveyResponse.vue";
 import PageTemplate from "./PageTemplate.vue";
 import { CheckCircle } from "lucide-vue-next";
 
+import { API_BASE_URL } from "@/constants/url";
+
 const route = useRoute();
 const router = useRouter();
 const surveyId = route.params.id;
@@ -30,7 +32,7 @@ async function isAlreadyReplied(surveyId) {
     if (!userId) return false;
 
     try {
-        const response = await fetch(`/api/survey/${surveyId}/responses`);
+        const response = await fetch(`${API_BASE_URL}/survey/${surveyId}/responses`);
         if (!response.ok) {
         console.error("Failed to fetch responses:", response.statusText);
         return false;
@@ -44,7 +46,7 @@ async function isAlreadyReplied(surveyId) {
 }
 onMounted(async () => {
     try {
-        const userRes = await fetch("/api/user/get");
+        const userRes = await fetch("${API_BASE_URL}/user/get");
         user.value = await userRes.json();
 
         if (userRes.status === 401) {
@@ -52,7 +54,7 @@ onMounted(async () => {
         return;
         }
 
-        const surveyRes = await fetch(`/api/survey/${surveyId}`);
+        const surveyRes = await fetch(`${API_BASE_URL}/survey/${surveyId}`);
         survey.value = await surveyRes.json();
 
         isOwner.value = survey.value.creator?._id === user.value._id;

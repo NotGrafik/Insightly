@@ -1,6 +1,8 @@
 <script setup>
 import { onMounted, defineProps, ref, computed } from "vue";
 
+import { API_BASE_URL } from "@/constants/url";
+
 import { useSidebar } from "@/components/ui/sidebar/utils";
 import { Button } from "@/components/ui/button";
 import confetti from "canvas-confetti";
@@ -134,7 +136,7 @@ async function isAlreadyReplied(surveyId) {
   if (!userId) return false;
   
   try {
-    const response = await fetch(`/api/survey/${surveyId}/responses`);
+    const response = await fetch(`${API_BASE_URL}/survey/${surveyId}/responses`);
     if (!response.ok) {
       console.error("Failed to fetch responses:", response.statusText);
       return false;
@@ -149,7 +151,7 @@ async function isAlreadyReplied(surveyId) {
 
 async function deleteSurvey(surveyId) {
   try {
-    const response = await fetch(`/api/survey/${surveyId}`, {
+    const response = await fetch(`${API_BASE_URL}/survey/${surveyId}`, {
       method: "DELETE",
     });
     if (!response.ok) {
@@ -170,7 +172,7 @@ async function updateSurvey(surveyId) {
   try {
     const surveyName = updatedName.value ?  updatedName.value : props.SurveyList.find(s => s._id === surveyId).name;
     const surveyDescription = updatedDescription.value ? updatedDescription.value : props.SurveyList.find(s => s._id === surveyId).description;
-    const response = await fetch(`/api/survey/${surveyId}`, {
+    const response = await fetch(`${API_BASE_URL}/survey/${surveyId}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",

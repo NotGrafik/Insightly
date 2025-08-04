@@ -40,6 +40,9 @@ const router = useRouter();
   user: { type: Object, required: true },
 });*/
 
+import { API_BASE_URL } from '@/constants/url';
+
+
 const user = reactive({
   name: '',
   email: '',
@@ -74,12 +77,11 @@ onMounted(() => {
   console.log(user);
 });
 
-
 const { isMobile } = useSidebar();
 
 const logout = async () => {;
   try {
-    const response = await fetch('/api/auth/logout', {
+    const response = await fetch(`${API_BASE_URL}/auth/logout`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

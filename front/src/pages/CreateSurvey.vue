@@ -10,6 +10,8 @@ import { Trash, CheckCircle } from 'lucide-vue-next';
 import { cn } from '@/lib/utils';
 import { useRouter } from 'vue-router';
 
+import { API_BASE_URL } from '@/constants/url';
+
 const router = useRouter();
 
 const submissionSuccess = ref(false);
@@ -17,7 +19,7 @@ const submissionSuccess = ref(false);
 let user ;
 
 onMounted(() => {
-    fetch('/api/user/get', {
+    fetch(`${API_BASE_URL}/user/get`, {
         method: 'GET',
         headers: { 'Content-Type': 'application/json' },
     })
@@ -54,7 +56,7 @@ function addQuestion() {
 }
 
 function submitSurvey() {
-    fetch('/api/survey/create', {
+    fetch(`${API_BASE_URL}/survey/create`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(survey),

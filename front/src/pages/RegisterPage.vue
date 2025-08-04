@@ -15,6 +15,8 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Eye, EyeClosed } from 'lucide-vue-next'
 
+import { API_BASE_URL } from '@/constants/url'
+
 // Champs liés au formulaire
 const firstName = ref('')
 const lastName = ref('')
@@ -93,7 +95,7 @@ const handleSubmit = () => {
     return
   }
 
-  fetch('/api/auth/register', {
+  fetch(`${API_BASE_URL}/auth/register`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

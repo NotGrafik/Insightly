@@ -18,6 +18,8 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Eye, EyeClosed } from 'lucide-vue-next';
 
+import { API_BASE_URL } from '@/constants/url';
+
 const firstName = ref('');
 const lastName = ref('');
 const email = ref('');
@@ -37,7 +39,7 @@ const formErrors = reactive({
 });
 
 onMounted(async () => {
-    fetch('/api/user/get')
+    fetch(`${API_BASE_URL}/user/get`)
         .then((res) => {
             if (res.status === 401) {
                 router.push({ path: '/auth/login', query: { redirect: router.currentRoute.value.fullPath } });
@@ -113,7 +115,7 @@ const handleSubmit = async () => {
     }
 
     try {
-        const res = await fetch('/api/user/update', {
+        const res = await fetch(`${API_BASE_URL}/user/update`, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(filteredData)
