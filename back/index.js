@@ -18,15 +18,10 @@ const authorizedOrigins = [
 ];
 
 app.use(cors({
-  origin: function (origin, callback) {
-    if (!origin || authorizedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
-    }
-  },
+  origin: '*',
   credentials: true
 }));
+
 
 app.options('*', cors());
 
