@@ -7,7 +7,6 @@ import MySurveyPage from '@/pages/MySurveyPage.vue'
 import CreateSurvey from '@/pages/CreateSurvey.vue'
 import Survey from '@/pages/Survey.vue'
 import AccountPage from '@/pages/AccountPage.vue'
-import Cookies from 'js-cookie'
 
 const routes = [
   {
@@ -53,30 +52,5 @@ const router = createRouter({
   history: createWebHistory(),
   routes
 })
-
-
-import { API_BASE_URL } from '@/constants/url'
-
-router.beforeEach(async (to, from, next) => {
-  const publicPages = ['/auth/login', '/auth/register'];
-  const isPublic = publicPages.includes(to.path);
-
-  try {
-    const response = await fetch(`${API_BASE_URL}/auth/me`, {
-      credentials: 'include',
-    });
-
-    if (response.ok) {
-      if (isPublic) return next('/home'); 
-      return next(); // OK
-    } else {
-      if (!isPublic) return next('/auth/login');
-      return next();
-    }
-  } catch (error) {
-    if (!isPublic) return next('/auth/login');
-    return next();
-  }
-});
 
 export default router

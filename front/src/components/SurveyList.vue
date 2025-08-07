@@ -36,7 +36,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from '@/components/ui/dialog'
+} from "@/components/ui/dialog";
 
 import {
   Tooltip,
@@ -72,9 +72,7 @@ const { state } = useSidebar();
 const updatedName = ref("");
 const updatedDescription = ref("");
 const typeButton = computed(() =>
-  updatedName.value === "" && updatedDescription.value === ""
-    ? "disabled"
-    : ""
+  updatedName.value === "" && updatedDescription.value === "" ? "disabled" : ""
 );
 
 watch(typeButton, (newVal) => {
@@ -123,20 +121,22 @@ function getCookie(name) {
 
 const parseJwt = (token) => {
   try {
-    return JSON.parse(atob(token.split('.')[1]));
+    return JSON.parse(atob(token.split(".")[1]));
   } catch (e) {
     return null;
   }
 };
 
-async function isAlreadyReplied(surveyId) {  
+async function isAlreadyReplied(surveyId) {
   const tokenCookie = getCookie("token");
   const decodedToken = parseJwt(tokenCookie);
   const userId = decodedToken ? decodedToken.id : null;
   if (!userId) return false;
-  
+
   try {
-    const response = await fetch(`${API_BASE_URL}/survey/${surveyId}/responses`);
+    const response = await fetch(`${API_BASE_URL}/survey/${surveyId}/responses`, {
+      credentials: "include",
+    });
     if (!response.ok) {
       console.error("Failed to fetch responses:", response.statusText);
       return false;
@@ -153,6 +153,7 @@ async function deleteSurvey(surveyId) {
   try {
     const response = await fetch(`${API_BASE_URL}/survey/${surveyId}`, {
       method: "DELETE",
+      credentials: "include",
     });
     if (!response.ok) {
       console.error("Failed to delete survey:", response.statusText);
@@ -166,14 +167,19 @@ async function deleteSurvey(surveyId) {
 }
 
 async function updateSurvey(surveyId) {
-  if(typeButton.value === "disabled") {
+  if (typeButton.value === "disabled") {
     return;
   }
   try {
-    const surveyName = updatedName.value ?  updatedName.value : props.SurveyList.find(s => s._id === surveyId).name;
-    const surveyDescription = updatedDescription.value ? updatedDescription.value : props.SurveyList.find(s => s._id === surveyId).description;
+    const surveyName = updatedName.value
+      ? updatedName.value
+      : props.SurveyList.find((s) => s._id === surveyId).name;
+    const surveyDescription = updatedDescription.value
+      ? updatedDescription.value
+      : props.SurveyList.find((s) => s._id === surveyId).description;
     const response = await fetch(`${API_BASE_URL}/survey/${surveyId}`, {
       method: "PUT",
+      credentials: "include",
       headers: {
         "Content-Type": "application/json",
       },
@@ -207,7 +213,6 @@ const replyStatusMap = ref({});
 
 onMounted(async () => {
   console.log("SurveyList component mounted", props.SurveyList);
-  
   for (const survey of props.SurveyList) {
     const res = await isAlreadyReplied(survey._id);
     replyStatusMap.value[survey._id] = res;
@@ -241,8 +246,7 @@ onMounted(async () => {
                     ? "You"
                     : survey.creator.firstName + " " + survey.creator.lastName
                 }}
-                </CardDescription
-              >
+              </CardDescription>
             </div>
             <Popover v-if="isUserSurvey">
               <PopoverTrigger as-child>
@@ -251,54 +255,53 @@ onMounted(async () => {
                 </Button>
               </PopoverTrigger>
               <PopoverContent class="w-30 m-0 p-2 flex flex-col items-center">
-                  <Dialog>
-                    <DialogTrigger>
-                        <div
-                          class="text-secondary-foreground flex items-center cursor-pointer relative p-2 rounded group"
-                        >
-                        <SquarePen class="size-4 mr-2" />
-                        <span
-                          class="relative after:content-[''] after:absolute after:left-0 after:bottom-0 after:h-[2px] after:w-0 after:bg-secondary-foreground after:transition-all after:duration-200 group-hover:after:w-full"
-                        >
-                          Update
-                        </span>
-                      </div>
-                    </DialogTrigger>
-                    <DialogContent>
-                      <DialogHeader>
-                        <DialogTitle>Edit Survey {{ survey.name }}</DialogTitle>
-                        <DialogDescription>
-                          Make changes to your survey here. Click save when you're done.
-                        </DialogDescription>
-                      </DialogHeader>
-                        <div class="grid gap-4">
-                          <Label for="surveyName">Survey Name</Label>
-                          <Input
-                            id="surveyName"
-                            type="text"
-                            v-model="updatedName"
-                            :placeholder="survey.name"
-                          />
-                          <Label for="surveyDescription">Description</Label>
-                          <Input
-                            id="surveyDescription"
-                            type="text"
-                            v-model="updatedDescription"
-                            :placeholder="survey.description"
-                          />
-                        </div>
-                      <DialogFooter>
-                        <Button
-                          type="button"
-                          :variant="typeButton"
-                          @click="updateSurvey(survey._id)"
-                        >
-                          Save Changes
-                        </Button>
-
-                      </DialogFooter>
-                    </DialogContent>  
-                  </Dialog>
+                <Dialog>
+                  <DialogTrigger>
+                    <div
+                      class="text-secondary-foreground flex items-center cursor-pointer relative p-2 rounded group"
+                    >
+                      <SquarePen class="size-4 mr-2" />
+                      <span
+                        class="relative after:content-[''] after:absolute after:left-0 after:bottom-0 after:h-[2px] after:w-0 after:bg-secondary-foreground after:transition-all after:duration-200 group-hover:after:w-full"
+                      >
+                        Update
+                      </span>
+                    </div>
+                  </DialogTrigger>
+                  <DialogContent>
+                    <DialogHeader>
+                      <DialogTitle>Edit Survey {{ survey.name }}</DialogTitle>
+                      <DialogDescription>
+                        Make changes to your survey here. Click save when you're done.
+                      </DialogDescription>
+                    </DialogHeader>
+                    <div class="grid gap-4">
+                      <Label for="surveyName">Survey Name</Label>
+                      <Input
+                        id="surveyName"
+                        type="text"
+                        v-model="updatedName"
+                        :placeholder="survey.name"
+                      />
+                      <Label for="surveyDescription">Description</Label>
+                      <Input
+                        id="surveyDescription"
+                        type="text"
+                        v-model="updatedDescription"
+                        :placeholder="survey.description"
+                      />
+                    </div>
+                    <DialogFooter>
+                      <Button
+                        type="button"
+                        :variant="typeButton"
+                        @click="updateSurvey(survey._id)"
+                      >
+                        Save Changes
+                      </Button>
+                    </DialogFooter>
+                  </DialogContent>
+                </Dialog>
                 <Separator />
                 <div
                   class="text-red-600 flex items-center cursor-pointer relative p-2 rounded group"

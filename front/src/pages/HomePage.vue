@@ -1,41 +1,46 @@
 <script setup>
-import { ref, onMounted, computed, nextTick, watchEffect } from 'vue';
-import { Input } from '@/components/ui/input';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { X, Search } from 'lucide-vue-next';
+import { ref, onMounted, computed, nextTick, watchEffect } from "vue";
+import { Input } from "@/components/ui/input";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { X, Search } from "lucide-vue-next";
 
-import PageTemplate from './PageTemplate.vue';
-import SurveyList from '@/components/SurveyList.vue';
-import { API_BASE_URL } from '@/constants/url';
+import PageTemplate from "./PageTemplate.vue";
+import SurveyList from "@/components/SurveyList.vue";
+import { API_BASE_URL } from "@/constants/url";
 
 const prefixRef = ref(null);
 const prefixWidth = ref(0);
 
 const glowInput = ref(false);
 const data = ref([]);
-const searchQuery = ref('');
+const searchQuery = ref("");
 const filters = ref([]); // ex: ['user']
 const user = ref(null);
 
 const fetchData = async () => {
-  const res = await fetch(`${API_BASE_URL}/survey/all`);
-  data.value = await res.json();
+  const res = await fetch(`${API_BASE_URL}/survey/all`, {
+    credentials: "include",
+  });
+  const json = await res.json();
+  data.value = json;
 
   const userRes = await fetch(`${API_BASE_URL}/user/get`, {
-    credentials: 'include',
+    credentials: "include",
   });
   user.value = await userRes.json();
 
-  if (user) data.value = data.value.filter(survey => survey.creator._id !== user.value._id);
+  if (user.value) {
+    data.value = data.value.filter((survey) => survey.creator._id !== user.value._id);
+  }
 };
 
 const handleTab = () => {
   const trimmed = searchQuery.value.trim().toLowerCase();
-  if (['user'].includes(trimmed) && !filters.value.includes(trimmed)) {
+  if (["user"].includes(trimmed) && !filters.value.includes(trimmed)) {
     filters.value.push(trimmed.charAt(0).toUpperCase() + trimmed.slice(1));
     glowInput.value = true;
-    searchQuery.value = '';
+    searchQuery.value = "";
     prefixWidth.value = prefixRef.value.offsetWidth * 3.2;
 
     setTimeout(() => {
@@ -45,16 +50,15 @@ const handleTab = () => {
 };
 
 const removeFilter = (filter) => {
-  filters.value = filters.value.filter(f => f !== filter);
-    prefixWidth.value = prefixRef.value.offsetWidth / 3.2;
-
+  filters.value = filters.value.filter((f) => f !== filter);
+  prefixWidth.value = prefixRef.value.offsetWidth / 3.2;
 };
 
 const filteredSurveys = computed(() => {
   const query = searchQuery.value.trim().toLowerCase();
 
   return data.value.filter((survey) => {
-    if (filters.value.includes('User')) {
+    if (filters.value.includes("User")) {
       const fullName = `${survey.creator.firstName} ${survey.creator.lastName}`.toLowerCase();
       return fullName.includes(query);
     }
@@ -63,10 +67,10 @@ const filteredSurveys = computed(() => {
 });
 
 const handleKeyDown = (e) => {
-  if (e.key === 'Escape' && filters.value.length) {
+  if (e.key === "Escape" && filters.value.length) {
     filters.value.pop();
     nextTick(updatePrefixWidth);
-  } else if (e.key === 'Backspace' && searchQuery.value === '' && filters.value.length) {
+  } else if (e.key === "Backspace" && searchQuery.value === "" && filters.value.length) {
     filters.value.pop();
     nextTick(updatePrefixWidth);
   }
@@ -102,9 +106,7 @@ watchEffect(() => {
               <Badge
                 v-for="filter in filters"
                 :key="filter"
-                :class="[
-                  'px-2 py-0.5 text-xs font-medium pointer-events-auto'
-                ]"
+                :class="['px-2 py-0.5 text-xs font-medium pointer-events-auto']"
               >
                 {{ filter }}
                 <X class="w-3 h-3 cursor-pointer" @click.stop="removeFilter(filter)" />
@@ -121,7 +123,11 @@ watchEffect(() => {
           />
         </div>
       </div>
-      <SurveyList v-if="filteredSurveys.length" :SurveyList="filteredSurveys" :is-user-survey="false" />
+      <SurveyList
+        v-if="filteredSurveys.length"
+        :SurveyList="filteredSurveys"
+        :is-user-survey="false"
+      />
       <div v-else class="text-center text-gray-500">No surveys found</div>
     </div>
   </PageTemplate>
@@ -147,7 +153,6 @@ input {
   100% {
     box-shadow: 0 0 0px rgb(46, 107, 255);
   }
-
 }
 
 .glow-effect {

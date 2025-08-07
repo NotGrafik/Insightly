@@ -1,11 +1,7 @@
 <script setup>
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-} from '@/components/ui/avatar';
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
-import { onMounted } from 'vue';
+import { onMounted } from "vue";
 
 import {
   DropdownMenu,
@@ -15,13 +11,13 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
+} from "@/components/ui/dropdown-menu";
 import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
   useSidebar,
-} from '@/components/ui/sidebar';
+} from "@/components/ui/sidebar";
 import {
   BadgeCheck,
   Bell,
@@ -29,10 +25,10 @@ import {
   CreditCard,
   LogOut,
   Sparkles,
-} from 'lucide-vue-next';
+} from "lucide-vue-next";
 
-import { useRouter } from 'vue-router';
-import { reactive } from 'vue';
+import { useRouter } from "vue-router";
+import { reactive } from "vue";
 
 const router = useRouter();
 
@@ -40,18 +36,17 @@ const router = useRouter();
   user: { type: Object, required: true },
 });*/
 
-import { API_BASE_URL } from '@/constants/url';
-
+import { API_BASE_URL } from "@/constants/url";
 
 const user = reactive({
-  name: '',
-  email: '',
-  avatar: '',
+  name: "",
+  email: "",
+  avatar: "",
 });
 
 const parseJwt = (token) => {
   try {
-    return JSON.parse(atob(token.split('.')[1]));
+    return JSON.parse(atob(token.split(".")[1]));
   } catch (e) {
     return null;
   }
@@ -60,11 +55,11 @@ const parseJwt = (token) => {
 const getCookie = (name) => {
   const value = `; ${document.cookie}`;
   const parts = value.split(`; ${name}=`);
-  if (parts.length === 2) return parts.pop().split(';').shift();
+  if (parts.length === 2) return parts.pop().split(";").shift();
 };
 
 onMounted(() => {
-  const token = getCookie('token');
+  const token = getCookie("token");
   if (token) {
     const decodedToken = parseJwt(token);
     if (decodedToken) {
@@ -79,21 +74,22 @@ onMounted(() => {
 
 const { isMobile } = useSidebar();
 
-const logout = async () => {;
+const logout = async () => {
   try {
     const response = await fetch(`${API_BASE_URL}/auth/logout`, {
-      method: 'POST',
+      method: "POST",
+      credentials: "include",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
     });
 
     if (response.ok) {
-      localStorage.removeItem('activeItem');
-      router.push('/');
+      localStorage.removeItem("activeItem");
+      router.push("/");
     }
   } catch (error) {
-    console.error('Network error during logout:', error);
+    console.error("Network error during logout:", error);
   }
 };
 </script>

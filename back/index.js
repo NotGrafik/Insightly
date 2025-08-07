@@ -15,6 +15,7 @@ const app = express();
 const allowedOrigins = [
   'https://insightly-sigma.vercel.app',
   'http://localhost:5173',
+  'https://insightly.eforsair.net'
 ];
 
 const corsOptions = {
