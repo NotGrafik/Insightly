@@ -57,6 +57,7 @@ export const login = async (req, res) => {
             sameSite: 'None',          
             maxAge: 86400000,   
         });
+        console.log('token', token);
         res.status(200).json({ message: "Connexion réussie." });
     } catch (err) {
         res.status(500).json({ error: "Erreur lors de la connexion de l'utilisateur." });

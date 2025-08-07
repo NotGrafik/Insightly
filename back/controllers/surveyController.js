@@ -1,10 +1,10 @@
 import Sondage from '../schema/survey.js';
 import Reponse from '../schema/reponses.js';
-import jwt from 'jsonwebtoken';
 
 export const getAllSondages = async (req, res) => {
     try {
-        const sondages = await Sondage.find().populate('creator');
+        const userId = req.user.id;
+        const sondages = await Sondage.find({ creator: { $ne: userId } }).populate('creator');
         res.json(sondages);
     } catch (err) {
         res.status(500).json({ error: err.message });
